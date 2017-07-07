@@ -44,7 +44,7 @@ const mapStateToProps = (state) => {
     let groupName = ''
     let userInfo=state.userInfo
     if (groups != null && groups[0] != null) {
-        groupMember=userInfo.filter(x=>)
+        //groupMember=userInfo.filter(x=>)
         groupMember = groups[0].members
         groupName = groups[0].name
     }
