@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
-import { fetchGroupMember, showMessage } from '../../actions'
+import { showMessage } from '../../actions'
+import { fetchGroupMember} from '../../actions/group'
 import { connect } from 'react-redux'
 //群组成员名片
 class GroupMember extends Component {
+    componentWillMount() {
+        //如果没有群组人员信息则更新数据
+        console.log("没有群组人员信息则更新数据")
+        console.log(this.props.fetchGroupMember)
+        if (this.props.groupMember == null || this.props.groupMember.length === 0) {            
+            this.props.fetchGroupMember(this.props.openId)            
+        }        
+    }
     render() {
         const { showMessage, openId, groupMember, groupName, hidden } = this.props
         if (openId == null || groupMember == null)
@@ -37,7 +46,7 @@ class GroupMember extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state) => {    
     let openId = state.showGroupMember
     let groups = state.groups.filter(x => x.openId === openId)
     let groupMember = []
@@ -45,9 +54,12 @@ const mapStateToProps = (state) => {
     let userInfo=state.userInfo
     if (groups != null && groups[0] != null) {
         //groupMember=userInfo.filter(x=>)
-        groupMember = groups[0].members
+        groupMember = groups[0].members 
         groupName = groups[0].name
     }
+    //alert(openId)
+    console.log("000000000000000")
+    console.log(groupMember)
     return { openId, groupMember, groupName }
 }
 

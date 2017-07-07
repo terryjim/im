@@ -2,42 +2,20 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import TreeView from '../../../utils/react-treeview';
 /*import pinyin from 'pinyin'*/
-/*const dataSource = [
-    {
-        type: '蓝筹科技',
-        collapsed: true,
-        people: [
-            { name: '研发部', age: 29, sex: 'male', role: 'coder', collapsed: true },
-            { name: '市场部', age: 27, sex: 'female', role: 'ocamler', collapsed: true },
-        ],
-    },
-    {
-        type: '美瑞科技',
-        collapsed: true,
-        people: [
-            { name: '综合部', age: 39, sex: 'male', role: 'boss', collapsed: true },
-        ],
-    },
-];
-*/
 
 /*const sample = [
-    { companyId: 1123, companyName: '蓝筹科技', collapsed: true, deps: [{ name: '研发', people: [{ name: '刘勇', openId: '0000000000000b64' }, { name: '刘勇2', openId: '0000000000000b70' }] }, { name: '市场部', people: [{ name: '刘勇3', openId: '0000000000000b7b' }, { name: '刘勇4', openId: '0000000000000b70' }] }] },
-    { companyId: 1124, companyName: '中瑞恒德', collapsed: true, deps: [{ name: '人事', people: [{ name: '金飚', openId: '0000000000000b70' }, { name: '张璐', openId: '0000000000000b78' }] }] }
+    { companyId: 1123, companyName: '蓝筹科技', collapsed: true, deps: [{ name: '研发', users: [{ name: '刘勇', openId: '0000000000000b64' }, { name: '刘勇2', openId: '0000000000000b70' }] }, { name: '市场部', users: [{ name: '刘勇3', openId: '0000000000000b7b' }, { name: '刘勇4', openId: '0000000000000b70' }] }] },
+    { companyId: 1124, companyName: '中瑞恒德', collapsed: true, deps: [{ name: '人事', users: [{ name: '金飚', openId: '0000000000000b70' }, { name: '张璐', openId: '0000000000000b78' }] }] }
 ]
 
 */
-
 class Corps extends Component {
     componentWillMount() {
         //如果没有组织架构信息则更新数据
         console.log("如果没有组织架构信息则更新数据")
-        console.log(this.props.fetchCorps)
         if (this.props.corps == null || this.props.corps.length === 0) {
-             console.log("111111111111111")
             this.props.fetchCorps()
-             console.log("2222222222222222222")
-        }        
+        }
     }
     render() {
         const { hidden, corps, onUserClick } = this.props

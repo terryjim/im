@@ -115,11 +115,12 @@ WebIM.config = {
     getFriendsUrl: 'http://cs-publish-api.s-plus.cn/CommonData/v2/card/1',
     getAvatarByOpenId: 'http://ucapi.s-plus.cn/ucenter/portrait.php?openid=',
     getUsersInfoUrl: 'http://ucapi.s-plus.cn/ucenter/user.php',
-    userCorps: [{id: 1123, name: '蓝筹科技' }, { id: 1124, name: '中瑞恒德' }],//用户所在企业
-    getDeptsUrl:'http://capi.s-plus.cn/api/v2/org/structure',
-    corpStructure: [
-        {1123:[{a:1}]},
-        {1124:[{a:1124}]}
-
-    ]
+    userCorps: [{ id: 1123, name: '蓝筹科技' }, { id: 1124, name: '中瑞恒德' }],//用户所在企业
+    getDeptsUrl: 'http://capi.s-plus.cn/api/v2/org/structure',
+    getGroupAvatarUrl: 'http://cs-publish-api.s-plus.cn/CommonData/v2/chatgroup/addinfo',
+    /* corpStructure: [
+         {1123:[{a:1}]},
+         {1124:[{a:1124}]}
+ 
+     ]*/
 };

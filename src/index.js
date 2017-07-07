@@ -9,8 +9,9 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import md5 from 'md5'
 import SDK from 'easemob-websdk'
-import {fetchGroups,receiveMessage} from './actions'
+import {receiveMessage} from './actions'
 import {fetchCorps} from './actions/corp'
+import {fetchGroups} from './actions/group'
 let WebIM = window.WebIM
 let conn = new SDK.connection({
     https: WebIM.config.https,

@@ -12,7 +12,7 @@ export const fetchCorps = (corps) => dispatch => {
 
   //return fetch(WebIM.config.getFriendsUrl, args)
   //return fetch("https://www.reddit.com/r/reactjs.json")
-  console.log("begin---------------------------------------")
+  console.log("开始获取企业组织架构")
   return fetch(WebIM.config.getDeptsUrl + '?id=' + corpsIds, args).then(response => response.json())
     .then(json => {     
       if (json!=null) {
@@ -20,11 +20,7 @@ export const fetchCorps = (corps) => dispatch => {
         result = json.map((x, index) => {
           return {deps:
             x.map(ele=>({name:ele.departName,users:ele.users.map(y=>({name:y.name,openId:y.openid}))})),companyId:corps[index].id,companyName:corps[index].name}          
-        })
-       
-        /*let list = json.Data.list;
-        list = list.map(child => ({ openId: child.OpenId, avatar: WebIM.config.getAvatarByOpenId + child.OpenId, name: child.Cards[0].name, mobile: child.Cards[0].mobile, email: child.Cards[0].email, ...child }))
-        list.sort((param1, param2) => (param1.name).localeCompare(param2.name))*/
+        })       
         return dispatch(getCorps(result))
       }
       else {
