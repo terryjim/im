@@ -1,0 +1,61 @@
+.tree-view {
+  overflow-y: hidden;
+}
+
+.tree-view_item {
+  /* immediate child of .tree-view, for styling convenience */
+	line-height: 30px;
+	cursor: pointer;
+	font-size: 14px;
+}
+.tree-view_item:hover, .tree-view_children .info:hover {
+	background: #f2f3f7;
+}
+
+/* style for the children nodes container */
+.tree-view_children {
+  /*margin-left: 16px;*/
+}
+.tree-view_children .tree-view .tree-view_item{
+	padding-left:16px;
+}
+.tree-view_children .info{
+	padding:10px 0;
+	padding-left:25px;
+	font-size:14px;
+}
+.info img{
+	width:40px;
+	height:40px;
+	border-radius:50%;
+	margin-right:10px;
+}
+.tree-view_children-collapsed {
+  height: 0px;
+}
+
+.tree-view_arrow {
+  width:10px;
+  height:10px;
+  background:url(./tree-view_arrow.png) no-repeat center;
+  cursor: pointer;
+  margin-right: 6px;
+  margin-left:10px;
+  font-size:20px;
+  display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.tree-view_arrow:after {
+  /*content: '\25BE';*/
+}
+
+/* rotate the triangle to close it */
+.tree-view_arrow-collapsed {
+  -webkit-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}

@@ -1,0 +1,43 @@
+{
+    //切换顶部导航，返回值：1、消息列表2、好友列表3、群组列表4、组织架构
+    //作用：上方导航选中效果，左侧导航切换
+    "topNav": 1,
+    //公司组织架构
+    "corps": [{
+            "companyId": 1123,
+            "companyName": "蓝筹科技",
+            "collapsed": true,
+            "deps": [{
+                "name": "研发",
+                "users": [{
+                    "name": "刘勇",
+                    "openId": "0000000000000b64"
+                }, {
+                    "name": "占智峰",
+                    "openId": "0000000000000b70"
+                }]
+            }, {
+                "name": "市场部",
+                "people": [{
+                    "name": "张璐",
+                    "openId": "0000000000000b7b"
+                }]
+            }]
+        },
+        {
+            "companyId": 1124,
+            "companyName": "中瑞恒德",
+            "collapsed": true,
+            "deps": [{
+                "name": "人事",
+                "users": [{
+                    "name": "金飚",
+                    "openId": "0000000000000b70"
+                }, {
+                    "name": "张璐",
+                    "openId": "0000000000000b78"
+                }]
+            }]
+        }
+    ]
+}
