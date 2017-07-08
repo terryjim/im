@@ -5,7 +5,7 @@ const Group = (group) => {
   return (
     <li onClick={group.onGroupClick} className={group.selected ? "active" : ''}>     
       <div className="webim_portrait"><img src={'../../img/avatar/'+group.avatar+'.png'}  /></div>
-      <div className="webim_contact_info friend_name">{group.name}{group.avatar}</div>
+      <div className="webim_contact_info friend_name">{group.name}</div>
     </li>
   )
 }

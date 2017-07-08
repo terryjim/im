@@ -1,12 +1,11 @@
 //用户基础信息
-const userInfo = (state = [{
-    /* openId: "0000000000000b64",
+  /* openId: "0000000000000b64",
      avatar: "http://ucapi.s-plus.cn/ucenter/portrait.php?openid=0000000000000b64",
      name: "刘勇",
      mobile: "13349957888",
      email: "yong.liu@bluechips.net.cn",
      Cards: [{ companyName: "蓝筹科技", title: "总经理" }]*/
-}], action) => {
+const userInfo = (state = [], action) => {
     switch (action.type) {
         case 'GET_FRIENDS':
             let friends = action.friends
@@ -21,11 +20,14 @@ const userInfo = (state = [{
         case 'GET_GROUPMEMBER':
             let groupMember = action.groupMember
             openIds = state.map(x => x.openId)//原state中的openId数组,如果不存在插入，如果已有可能好友不处理以免清除名片信息
+            debugger
             groupMember.forEach(element => {
                 if (openIds == null || openIds.length === 0 || openIds.indexOf(element.openId) < 0)
                     state.push(element)              
             });
             return state.slice();
+
+            
         default:
             return state
 

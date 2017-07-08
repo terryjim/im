@@ -5,7 +5,8 @@ import Group from './Group'
 class Groups extends Component {
    
     render() {
-        const { groups, onGroupClick, hidden, selectedItem } = this.props         
+        const { groups, onGroupClick, hidden, selectedItem } = this.props   
+        console.log(groups)      
         return (
             <ul className="webim_leftbar_message im_tab_nav_no" style={{
                 display: hidden ? 'none' : 'block'

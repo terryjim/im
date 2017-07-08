@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import { showMessage } from '../../actions'
-import { fetchGroupMember} from '../../actions/group'
+import { fetchGroupMember } from '../../actions/group'
 import { connect } from 'react-redux'
 //群组成员名片
 class GroupMember extends Component {
-    componentWillMount() {
+    /* shouldComponentUpdate() {       
+         if (this.props.openId == null)
+             return false
+             return true
+     }*/
+    componentDidUpdate() {
         //如果没有群组人员信息则更新数据
         console.log("没有群组人员信息则更新数据")
         console.log(this.props.fetchGroupMember)
-        if (this.props.groupMember == null || this.props.groupMember.length === 0) {            
-            this.props.fetchGroupMember(this.props.openId)            
-        }        
+        if (this.props.openId == null || this.props.openId === 0)
+            return null
+        if (this.props.groupMember == null || this.props.groupMember.length === 0) {
+            this.props.fetchGroupMember(this.props.openId)
+        }
     }
     render() {
         const { showMessage, openId, groupMember, groupName, hidden } = this.props
@@ -46,19 +53,27 @@ class GroupMember extends Component {
     }
 }
 
-const mapStateToProps = (state) => {    
+const mapStateToProps = (state) => {
     let openId = state.showGroupMember
     let groups = state.groups.filter(x => x.openId === openId)
     let groupMember = []
     let groupName = ''
-    let userInfo=state.userInfo
+    let userInfo = state.userInfo
+    let userOpenIds = userInfo.map(x => x.openId)   //所有用户的openId数组，查询用户所在位置用
+    debugger
     if (groups != null && groups[0] != null) {
-        //groupMember=userInfo.filter(x=>)
-        groupMember = groups[0].members 
         groupName = groups[0].name
+        if (groups[0].members != null)
+            groupMember = groups[0].members.map(x => {
+                let user = userInfo[userOpenIds.indexOf(x)]
+                return { name: user.name, avatar: user.avatar, openId: x }
+            })
     }
+
+
     //alert(openId)
     console.log("000000000000000")
+    console.log(groups)
     console.log(groupMember)
     return { openId, groupMember, groupName }
 }

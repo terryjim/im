@@ -4,10 +4,16 @@ const groups = (state = [{
     avatar: "http://ucapi.s-plus.cn/ucenter/portrait.php?openid=0000000000000b64",
     name: "刘勇", members: []
 }], action) => {
-    if (action.type == 'GET_GROUPS') {
-        state = action.groups
-    }
-    return state;
 
+    switch (action.type) {
+        case 'GET_GROUPS':
+            return action.groups
+        case 'GET_GROUPMEMBER':
+            let group = (state.filter(x => x.openId === action.openId))[0]
+            group.members = action.groupMember.map(y => y.openId)
+            return state.slice()
+        default:
+            return state
+    }
 }
 export default groups;

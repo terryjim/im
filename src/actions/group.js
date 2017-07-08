@@ -68,16 +68,18 @@ export const showGroupMember = (openId) => ({
 })
 
 //根据异步查询数据获取群组成员列表信息
-export const getGroupMember = (json) => {
+export const getGroupMember = (openId,json) => {
+  console.log('getGroupMember')
+  console.log(json)
   return ({
     type: 'GET_GROUPMEMBER',
+    openId,
     groupMember: json,
     receivedAt: Date.now()
   })
 }
 export const fetchGroupMember = (groupId) => dispatch => {
-  console.log('开始获取群组成员')
-  debugger
+  console.log('开始获取群组成员')  
   //dispatch(showGroupMember(groupId))   //左侧群组列表选中焦点
   let options = {
     groupId: groupId,
@@ -91,7 +93,7 @@ export const fetchGroupMember = (groupId) => dispatch => {
         else
           return { 'openId': x.member }
       })
-      return dispatch(fetchGroupMember2(groupMember))
+      return dispatch(fetchGroupMember2(groupId,groupMember))
     },
     error: function (e) {
       alert("获取群组成员列表出错！")
@@ -107,7 +109,7 @@ export const fetchGroupMember = (groupId) => dispatch => {
 }
 
 //根据fetchGroupMember得到的openId到用户中心取得详细信息
-export const fetchGroupMember2 = (groupMember) => dispatch => {
+export const fetchGroupMember2 = (groupId,groupMember) => dispatch => {
   //不能用headers=new Headers()，否则跨域出错
   let headers = {};
   let openIds = (groupMember.map(x => x.openId)).join(',')
@@ -118,7 +120,7 @@ export const fetchGroupMember2 = (groupMember) => dispatch => {
         let list = json.data; console.log(list);
         list = list.map(child => ({ openId: child.openid, avatar: WebIM.config.getAvatarByOpenId + child.openid, name: child.realname, mobile: child.username, email: child.email }))
         list.sort((param1, param2) => (param1.name).localeCompare(param2.name))
-        return dispatch(getGroupMember(list))
+        return dispatch(getGroupMember(groupId,list))
       }
       else {
         alert("获取群组用户信息出错！")
