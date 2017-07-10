@@ -10,7 +10,8 @@ import showFriend from './showFriend'
 import showGroupMember from './showGroupMember'
 import userInfo from './userInfo'
 import corps from './corps'
+import initialise from './initialise'
 export default combineReducers({
-    topNav, showMain, messages, friends,groups,showMessage,showFriend,showGroupMember,userInfo,corps
+    topNav, showMain, messages, friends,groups,showMessage,showFriend,showGroupMember,userInfo,corps,initialise
 })
 

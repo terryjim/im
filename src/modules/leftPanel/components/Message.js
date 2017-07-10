@@ -9,7 +9,7 @@ const Message = (message) => (
     <div className="webim_contact_info">
       <p className="webim_contact_username">
         <span className="title">{message.userName}</span>
-        <span className="webim_contact_time">{convertDate(message.lastReceived)}</span>
+        <span className="webim_contact_time">{convertDate(message.lastReceived,'yy/MM/dd')}</span>
       </p>
       <p>
         <span className="webim_contact_p">{message.msgs == null ? '' : message.msgs.length > 0 ? message.msgs[message.msgs.length - 1].data : ''}</span>

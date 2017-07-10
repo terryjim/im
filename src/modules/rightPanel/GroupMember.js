@@ -60,7 +60,7 @@ const mapStateToProps = (state) => {
     let groupName = ''
     let userInfo = state.userInfo
     let userOpenIds = userInfo.map(x => x.openId)   //所有用户的openId数组，查询用户所在位置用
-    debugger
+    
     if (groups != null && groups[0] != null) {
         groupName = groups[0].name
         if (groups[0].members != null)

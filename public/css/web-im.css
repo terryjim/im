@@ -514,6 +514,10 @@ ul.expmenu li ul li:active {
 	font-size:14px;
 	border-bottom-right-radius:3px;
 }
+.webim_chatwindow_bg .row{
+	margin-left:0;
+	margin-right:0;
+}
 .webim_user_card{
 	line-height:33px;
 }

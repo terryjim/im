@@ -8,11 +8,11 @@ let Chat = ({ hidden, openId, items}) => (
     <div className="webim_chatwindow" style={{
         display: hidden ? 'none' : ''
     }}>
-        {items.map(item =>
+        {items!=null?items.map(item =>
             <ChatItem key={item.openId}
                sendTo={item.openId}  hidden={openId != item.openId} 
             />
-        )}
+        ):null}
     </div>
 )
 /*

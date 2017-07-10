@@ -1,47 +1,53 @@
-//异步获取所有消息列表
-const messages = (state = [
-    /*{
-         openId: '0000000000000b7b',
-         userName: '钱钱钱钱',
-         newMsgs: 12,//未读消息数
-         lastReceived: 1498640400,//最后一条接收时的时间戳
-         type:0,//0:个人1：群组
-         msgs: [
-             {
-                 id: "你好",
-                 type: 'chat',
-                 to: ',',
-                 data: '',
-                 newMsg: true,
-                 received://接收时的时间  服务器端延迟消息：delay:"2017-06-29T02:37:39.187Z"
-             }
-         ]
-    }，{
-         openId: '0000000000000b7b',
-         userName: '钱钱钱钱',
-         newMsgs: 12,//未读消息数
-         lastReceived: 1498640400,//最后一条接收时的时间戳
-         type:1,//0:用户1：群组
-         msgs: [
-             {
-                 id: "你好",
-                 type: 'chat',
-                 from:'',//群组内发言的用户openId
-                 userName:'',//群组内发言的用户名
-                 to: ',',
-                 data: '',
-                 newMsg: true,
-                 received://接收时的时间  服务器端延迟消息：delay:"2017-06-29T02:37:39.187Z"
-             }
-         ]
-    }*/
+/*
+sample_state:
+[
+    {
+        openId: '0000000000000b7b',
+        userName: '钱钱钱钱',
+        newMsgs: 12,//未读消息数
+        lastReceived: 1498640400,//最后一条接收时的时间戳
+        type: 0,//0:个人1：群组
+        msgs: [
+            {
+                data: "测试数据",
+                from: "0000000000000b6d",
+                id: "WEBIM_36a685c4da1",
+                newMsg: false,
+                received: "2017-07-10 16:33:38.560",//接收时的时间  服务器端延迟消息：delay:"2017-06-29T02:37:39.187Z"
+                to: "0000000000000b7b",
+                type: "singleChat",
 
-], action) => {
+            }
+        ]
+    }, {
+        openId: '0000000000000b7b',
+        avatar: "1",
+        userName: '钱钱钱钱',
+        newMsgs: 12,//未读消息数
+        lastReceived: "2017-07-10 16:37:42.901",
+        type: 1,//0:用户1：群组
+        msgs: [
+            {
+                id: "WEBIM_36a6897f4f2",
+                type: 'singleChat',
+                from: '',//群组内发言的用户openId
+                userName: '',//群组内发言的用户名
+                to: ',',
+                data: '你好',
+                newMsg: true,
+                received: "2017-07-10 16:37:42.901"
+            }
+        ]
+    }
+]*/
+//异步获取所有消息列表
+const messages = (state = null, action) => {
     //state中消息列表所有的openID
     let msgOpenIds = new Array();
-    state.forEach(x => msgOpenIds.push(x.openId))
+    if (state != null)
+        state.forEach(x => msgOpenIds.push(x.openId))
     switch (action.type) {
-        case 'GET_FRIENDS':
+        /*case 'GET_FRIENDS':
             //如果获取到的好友不存在消息列表则在消息列表中新增一条空记录以避免打开消息窗口时出错
             let friendOpenIds = msgOpenIds.filter(x => x.type === 0)
             let friends = action.friends
@@ -58,24 +64,49 @@ const messages = (state = [
             //state中消息列表所有的openID           
             let groupOpenIds = msgOpenIds.filter(x => x.type === 1)
             let groups = action.groups
+            console.log(groups)
             groups.forEach(group => {
                 if (groupOpenIds.indexOf(group.openId) < 0) {
-                    state = [...state, { type: 1, openId: group.openId, avatar: window.WebIM.config.getAvatarByOpenId + group.OpenId, userName: group.name, newMsgs: 0, msgs: [] }]
+                    state = [...state, { type: 1, openId: group.openId, avatar: group.avatar, userName: group.name, newMsgs: 0, msgs: [] }]
                 }
             }
             )
-            return state;
-        case 'SHOW_MESSAGE':  //取消未读状态
-            state.map(x => {
-                if (x.openId === action.openId) {  //未处理群组和用户存在openId相同的情况
-                    x.newMsgs = 0
+            return state;*/
+        case 'SHOW_MESSAGE':  //取消未读状态  
+            if (state == null) {
+                return [{
+                    openId: action.openId,
+                    userName: action.userName,
+                    newMsgs: 0,//未读消息数
+                    lastReceived: null,
+                    type: action.isGroup ? 1 : 0,
+                    msgs: []
+                }]
+            }
+            else {
+                let found = false;
+                let newState = state.map(x => {
+                    if (x.openId === action.openId && x.type === (action.isGroup?1:0)) {  //未处理群组和用户存在openId相同的情况
+                        found = true
+                        x.newMsgs = 0
+                    }
+                })
+                if (!found) {
+                    newState.push({
+                        openId: action.openId,
+                        userName: action.userName,
+                        newMsgs: 0,//未读消息数
+                        lastReceived: null,
+                        type: action.isGroup,
+                        msgs: []
+                    })
                 }
-            })
-            return state.slice();
+                return newState
+            }          
 
         case 'RECEIVE_MESSAGE':
             let receivedMsg = {}
-             message = action.message
+            message = action.message
             if (message.delay != null)
                 receivedMsg.received = new Date(message.delay).Format("yyyy-MM-dd hh:mm:ss.S");
             else
@@ -124,7 +155,7 @@ const messages = (state = [
         case 'APPEND_SENT':
             //添加已发送的消息到消息列表
             let msg = {}
-            let message = action.message          
+            let message = action.message
             msg.received = new Date().Format("yyyy-MM-dd hh:mm:ss.S");
             msg.id = message.id
             msg.type = message.type

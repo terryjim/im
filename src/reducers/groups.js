@@ -1,9 +1,5 @@
 //群组列表
-const groups = (state = [{
-    openId: "0000000000000b64",
-    avatar: "http://ucapi.s-plus.cn/ucenter/portrait.php?openid=0000000000000b64",
-    name: "刘勇", members: []
-}], action) => {
+const groups = (state =null, action) => {
 
     switch (action.type) {
         case 'GET_GROUPS':

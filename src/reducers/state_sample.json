@@ -39,5 +39,38 @@
                 }]
             }]
         }
-    ]
+    ],
+    "messages": [{
+        "openId": "0000000000000b7b",
+        "userName": "钱钱钱钱",
+        "newMsgs": 12, //未读消息数
+        "lastReceived": 1498640400, //最后一条接收时的时间戳
+        "type": 0, //0:个人1：群组
+        "msgs": [{
+            "data": "测试数据",
+            "from": "0000000000000b6d",
+            "id": "WEBIM_36a685c4da1",
+            "newMsg": false,
+            "received": "2017-07-10 16:33:38.560", //接收时的时间  服务器端延迟消息：delay:"2017-06-29T02:37:39.187Z"
+            "to": "0000000000000b7b",
+            "type": "singleChat"
+        }]
+    }, {
+        "openId": "0000000000000b7b",
+        "avatar": "1",
+        "userName": "钱钱钱钱",
+        "newMsgs": 12, //未读消息数
+        "lastReceived": "2017-07-10 16:37:42.901",
+        "type": 1, //0:用户1：群组
+        "msgs": [{
+            "id": "WEBIM_36a6897f4f2",
+            "type": "singleChat",
+            "from": "", //群组内发言的用户openId
+            "userName": "", //群组内发言的用户名
+            "to": ",",
+            "data": "你好",
+            "newMsg": true,
+            "received": "2017-07-10 16:37:42.901"
+        }]
+    }]
 }

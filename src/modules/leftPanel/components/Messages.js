@@ -7,13 +7,13 @@ const Messages = ({ messages, onMessageClick, hidden, selectedItem}) => (
     <ul className="webim_leftbar_message im_tab_nav_no" style={{
         display: hidden ? 'none' : 'block'
     }}>
-        {messages.map(msg =>
+        {messages!=null?messages.map(msg =>
             <Message
                 key={msg.openId}
                 {...msg}
                 onMessageClick={() => onMessageClick(msg.openId)}
                 selected={selectedItem==msg.openId}  
-            />)
+            />):null
 
         }
     </ul>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { showIntro, fetchFriends } from '../../actions'
+import { showIntro} from '../../actions'
+import {fetchFriends } from '../../actions/friend'
 import Friends from './components/Friends'
 
 const mapStateToProps = (state) => {

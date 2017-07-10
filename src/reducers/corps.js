@@ -6,7 +6,7 @@
 ]*/
 
 
-const corps = (state = [], action) => {
+const corps = (state =null, action) => {
     if (action.type == 'GET_CORPS') {
         state = action.corps
     }

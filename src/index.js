@@ -2,16 +2,17 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
-import {compose,  createStore, applyMiddleware } from 'redux'
-import {persistStore, autoRehydrate} from 'redux-persist'
+import { compose, createStore, applyMiddleware } from 'redux'
+import { persistStore, autoRehydrate } from 'redux-persist'
 import reducers from './reducers'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import md5 from 'md5'
 import SDK from 'easemob-websdk'
-import {receiveMessage} from './actions'
-import {fetchCorps} from './actions/corp'
-import {fetchGroups} from './actions/group'
+import { receiveMessage } from './actions'
+import { fetchCorps } from './actions/corp'
+import { fetchGroups } from './actions/group'
+import { fetchFriends } from './actions/friend'
 let WebIM = window.WebIM
 let conn = new SDK.connection({
     https: WebIM.config.https,
@@ -27,8 +28,9 @@ conn.listen({
         // 手动上线指的是调用conn.setPresence(); 如果conn初始化时已将isAutoLogin设置为true
         // 则无需调用conn.setPresence();   
         //获取群组 
-        store.dispatch(fetchGroups());    
-       store.dispatch(fetchCorps(WebIM.config.userCorps));  
+        if (store.getState().groups == null)
+            store.dispatch(fetchGroups());
+
         //getGroups();
         //获取好友
         //获取消息列表
@@ -36,16 +38,16 @@ conn.listen({
 
     },
     onClosed: function (message) { },         //连接关闭回调
-    onTextMessage: function (message) {    
-        console.log(message)      
-        store.dispatch(receiveMessage(message))        
-       },    //收到文本消息
-    onEmojiMessage: function (message) {  console.log(message)},   //收到表情消息
-    onPictureMessage: function (message) {  console.log(message)}, //收到图片消息
+    onTextMessage: function (message) {
+        console.log(message)
+        store.dispatch(receiveMessage(message))
+    },    //收到文本消息
+    onEmojiMessage: function (message) { console.log(message) },   //收到表情消息
+    onPictureMessage: function (message) { console.log(message) }, //收到图片消息
     onCmdMessage: function (message) { console.log(message) },     //收到命令消息
     onAudioMessage: function (message) { console.log(message) },   //收到音频消息
-    onLocationMessage: function (message) {  console.log(message)},//收到位置消息
-    onFileMessage: function (message) {  console.log(message)},    //收到文件消息
+    onLocationMessage: function (message) { console.log(message) },//收到位置消息
+    onFileMessage: function (message) { console.log(message) },    //收到文件消息
     onVideoMessage: function (message) {
         var node = document.getElementById('privateVideo');
         var option = {
@@ -82,30 +84,30 @@ let options = {
     appKey: WebIM.config.appkey
 };
 conn.open(options);
-//获取群组
-/*const getGroups = () => {
-    let options = {
-        success: function (resp) {
-            console.log(resp)
-        },
-        error: function (e) {
-            console.log(e);
-        }
-    };
-    conn.getGroup(options);
-}*/
+
 const store = createStore(reducers, undefined,
-  compose(
-    applyMiddleware(thunk),
-    autoRehydrate()
-  ))
-  //persistStore(store,{whitelist:['messages']})
+    compose(
+        applyMiddleware(thunk),
+        autoRehydrate()
+    ))
+//persistStore(store)
+
+//获取组织架构
+if (store.getState().corps == null)
+    store.dispatch(fetchCorps(WebIM.config.userCorps));
+//获取好友列表
+if (store.getState().friends == null)
+    store.dispatch(fetchFriends());
+
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
 );
+
+
+
 //store.subscribe(()=>console.log(store.getState()))
 registerServiceWorker();
 
@@ -115,23 +117,21 @@ registerServiceWorker();
 // 例子：  
 // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423  
 // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18  
-Date.prototype.Format = function(fmt)  
-{ //author: meizz  
-    var o = {  
-        "M+" : this.getMonth()+1,                 //月份  
-        "d+" : this.getDate(),                    //日  
-        "h+" : this.getHours(),                   //小时  
-        "m+" : this.getMinutes(),                 //分  
-        "s+" : this.getSeconds(),                 //秒  
-        "q+" : Math.floor((this.getMonth()+3)/3), //季度  
-        "S"  : this.getMilliseconds()             //毫秒  
-    };  
-    if(/(y+)/.test(fmt))  
-        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));  
-    for(var k in o)  
-        if(new RegExp("("+ k +")").test(fmt))  
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));  
-    return fmt;  
-};  
-  
-  
+Date.prototype.Format = function (fmt) { //author: meizz  
+    var o = {
+        "M+": this.getMonth() + 1,                 //月份  
+        "d+": this.getDate(),                    //日  
+        "h+": this.getHours(),                   //小时  
+        "m+": this.getMinutes(),                 //分  
+        "s+": this.getSeconds(),                 //秒  
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度  
+        "S": this.getMilliseconds()             //毫秒  
+    };
+    if (/(y+)/.test(fmt))
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+};
+

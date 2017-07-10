@@ -4,10 +4,10 @@ import Friend from './Friend'
 /*import pinyin from 'pinyin'*/
 
 class Friends extends Component {
-    componentDidMount() {
+   /* componentDidMount() {
         const { fetchFriends } = this.props
         fetchFriends();//从FriendList中传过来的action，不是redux中的dispatch
-    }
+    }*/
     render() {
         const { friends, onFriendClick, hidden, selectedItem } = this.props
         return (

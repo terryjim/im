@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { showIntro, fetchFriends } from '../../actions'
+import { showIntro} from '../../actions'
 import Corps from './components/Corps'
 
 const mapStateToProps = (state) => {
@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = {
     onUserClick: showIntro,
-    fetchCorps: fetchFriends
+   /* fetchCorps: fetchFriends*/
 }
 
 const CorpList = connect(
