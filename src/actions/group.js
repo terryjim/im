@@ -105,7 +105,6 @@ export const fetchGroupMember = (groupId) => dispatch => {
 //根据fetchGroupMember得到的openId到用户中心取得详细信息
 export const fetchGroupMember2 = (groupId,groupMember) => dispatch => {
   //不能用headers=new Headers()，否则跨域出错
-  let headers = {};
   let openIds = (groupMember.map(x => x.openId)).join(',')
   let args = { method: 'POST', mode: 'cors', body: convertObjectToFormData({ 'access_token': WebIM.config.token, openids: openIds }) }
   return fetch(WebIM.config.getUsersInfoUrl, args).then(response => response.json())

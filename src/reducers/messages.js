@@ -43,36 +43,12 @@ sample_state:
 //异步获取所有消息列表
 const messages = (state = [], action) => {
     //state中消息列表所有的openID
-    let msgOpenIds = new Array();
+    let msgOpenIds = new Array()
+    let message=null
     if (state != null)
         state.forEach(x => msgOpenIds.push(x.openId))
     switch (action.type) {
-        /*case 'GET_FRIENDS':
-            //如果获取到的好友不存在消息列表则在消息列表中新增一条空记录以避免打开消息窗口时出错
-            let friendOpenIds = msgOpenIds.filter(x => x.type === 0)
-            let friends = action.friends
-            friends.forEach(friend => {
-                if (friendOpenIds.indexOf(friend.openId) < 0) {
-                    state = [...state, { type: 0, openId: friend.openId, avatar: window.WebIM.config.getAvatarByOpenId + friend.OpenId, userName: friend.name, newMsgs: 0, msgs: [] }]
-                }
-            }
-            )
-            return state;
-
-        case 'GET_GROUPS':
-            //如果获取到的群组不存在消息列表则在消息列表中新增一条空记录以避免打开消息窗口时出错
-            //state中消息列表所有的openID           
-            let groupOpenIds = msgOpenIds.filter(x => x.type === 1)
-            let groups = action.groups
-            console.log(groups)
-            groups.forEach(group => {
-                if (groupOpenIds.indexOf(group.openId) < 0) {
-                    state = [...state, { type: 1, openId: group.openId, avatar: group.avatar, userName: group.name, newMsgs: 0, msgs: [] }]
-                }
-            }
-            )
-            return state;*/
-        case 'SHOW_MESSAGE':
+          case 'SHOW_MESSAGE':
             //显示所选用户消息、打开对话界面，若不存在该用户消息则创建一条记录，取消未读状态
            //action: (type:'SHOW_MESSAGE'，{openId,userName,isGroup=false})     
             if (state == null) {
@@ -85,8 +61,7 @@ const messages = (state = [], action) => {
                 }]
             }
             else {                
-                let found = false;
-                debugger
+                let found = false;                
                 let newState = state.map(x => {
                     if (x.openId === action.openId && x.type === (action.isGroup ? 1 : 0)) {
                         found = true
@@ -178,7 +153,7 @@ const messages = (state = [], action) => {
         case 'APPEND_SENT':
             //添加已发送的消息到消息列表
             let msg = {}
-            let message = action.message
+            message = action.message
             msg.received = new Date().Format("yyyy-MM-dd hh:mm:ss.S");
             msg.id = message.id
             msg.type = message.type

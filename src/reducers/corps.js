@@ -7,7 +7,7 @@
 
 
 const corps = (state =null, action) => {
-    if (action.type == 'GET_CORPS') {
+    if (action.type === 'GET_CORPS') {
         state = action.corps
     }
     return state;
