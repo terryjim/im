@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { convertDate } from '../../utils'
 import { connect } from 'react-redux'
-import { appendSent } from '../../actions'
+import { appendSent } from '../../actions/message'
 //消息窗口  
 /*
 消息内容格式：
@@ -33,7 +33,9 @@ class ChatItem extends Component {
         let msgsAll = this.props.msgsAll
         msgsAll = msgsAll.filter(x => x.openId == this.props.sendTo)
         let thisMsg = (msgsAll == null || msgsAll.length === 0) ? null : msgsAll[0]
+
         let msgs = thisMsg.msgs
+        console.log(msgs)
         let content = []
         let lastReceived = ''
         let isMe = false //判断消息是对方发的还是我发的
@@ -45,8 +47,10 @@ class ChatItem extends Component {
                     content.push(<div className="col-sm-12 text-center font_size12 text_gray m-b">{convertDate(lastReceived)}</div>)
                 }
                 isMe = msg.from == window.WebIM.config.openId
+                console.log(msgs)
                 content.push(<div className={isMe ? "col-sm-12 m-b  text-right" : "col-sm-12 m-b"}>
                     <div className={isMe ? "webim_portrait pull-right m-l-sm" : "webim_portrait m-r-sm"}><img src={isMe ? window.WebIM.config.getAvatarByOpenId + window.WebIM.config.openId : window.WebIM.config.getAvatarByOpenId+msg.from} /></div>
+                    {thisMsg.type==0||isMe?'':<div className="msg_bubble_name pull-left m-l-sm">{msg.fromUser}</div>}
                     <div className={isMe ? "bubble_arrow rotate" : "bubble_arrow"}></div>
                     <div className="bubble_cont">
                         {msg.data}
@@ -86,21 +90,7 @@ class ChatItem extends Component {
         )
     }
 }
-/*ChatItem.sendMsg = (content, openId) => {
-    let id = window.WebIM.conn.getUniqueId();         // 生成本地消息id
-    let msg = new window.WebIM.message('txt', id); // 创建文本消息          
-    msg.set({
-        msg: content,                  // 消息内容
-        to: openId,                          // 接收消息对象（用户id）
-        roomType: false,
-        success: function (id, serverMsgId) {
-            console.log('send private text Success');
-        }
-    });
-    msg.body.chatType = 'singleChat';
-    window.WebIM.conn.send(msg.body);
-}
-*/
+
 //发送消息，成功后添加到接收消息列表中
 //@param 聊天类型个人、群组，消息类型文本、图片……，内容，dispatch,回调清除发送栏
 const sendMsg = (chatType, msgType, openId, content, dispatch, func) => {
@@ -137,10 +127,45 @@ const sendMsg = (chatType, msgType, openId, content, dispatch, func) => {
 
 }
 const mapStateToProps = (state) => {
-    let msgsAll = state.messages
+    let msgsAll = convertMessages(state.messages, state.userInfo, state.groups)
     return { msgsAll }
 }
+
 ChatItem = connect(mapStateToProps)(ChatItem)
 
 export default ChatItem
+
+
+
+//转换消息列表，补充用户其它属性
+const convertMessages = (messages, userInfos, groups) => {
+    console.log(messages)
+  return (messages.map(x => {
+    if (x.type === 0) {//个人
+      let infos = userInfos.filter(y => y.openId == x.openId)
+      if (infos != null && infos.length > 0) {
+        return { ...x, userName: infos[0].name, avatar: infos[0].avatar }
+      }
+      else
+        return x
+    } else {//群组
+      let group = groups.filter(y => y.openId == x.openId)
+      if (group != null && group.length > 0) {
+        let msgs = x.msgs
+        if (msgs != null && msgs.length > 0) {
+          debugger
+          msgs=msgs.map(z => {
+            //查找群组内发信人信息
+            let sendMan = (userInfos.filter(user => user.openId == z.from))[0]
+            return { ...z, fromUser: sendMan.name }
+          })
+        }
+        return { ...x, msgs, userName: group[0].name, avatar: group[0].avatar }
+      }
+      else
+        return x
+    }
+  }
+  ))
+}
 

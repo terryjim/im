@@ -36,7 +36,9 @@ const mapStateToProps = (state) => {
     let openId = state.showMessage 
     return { openId, items}
 }
+
 Chat = connect(
     mapStateToProps
 )(Chat)
 export default Chat;
+

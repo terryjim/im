@@ -808,4 +808,18 @@ ul.expmenu li ul li:active {
 	background:#fff;
 }
 
-
+/*正在加载数据 样式*/
+.loading{
+	position:absolute; 
+	top:40%; 
+	left:0; 
+	right:0;
+	text-align:center;
+}
+.loading img{
+	margin-bottom:10px;
+}
+.loading p{
+	font-size:12px; 
+	color:#a8a8a8;
+}

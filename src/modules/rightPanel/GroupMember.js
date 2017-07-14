@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { showMessage } from '../../actions'
+import { showMessage } from '../../actions/message'
 import { fetchGroupMember } from '../../actions/group'
 import { connect } from 'react-redux'
 //群组成员名片
@@ -9,7 +9,7 @@ class GroupMember extends Component {
              return false
              return true
      }*/
-    componentDidUpdate() {
+ /*   componentDidUpdate() {
         //如果没有群组人员信息则更新数据
         console.log("没有群组人员信息则更新数据")
         console.log(this.props.fetchGroupMember)
@@ -18,9 +18,9 @@ class GroupMember extends Component {
         if (this.props.groupMember == null || this.props.groupMember.length === 0) {
             this.props.fetchGroupMember(this.props.openId)
         }
-    }
+    }*/
     render() {
-        const { showMessage, openId, groupMember, groupName, hidden } = this.props
+        const { showMessage, openId, groupMember, groupName, hidden,avatar } = this.props
         if (openId == null || groupMember == null)
             return null
         else
@@ -37,7 +37,7 @@ class GroupMember extends Component {
                                 return (
 
                                     <dl>
-                                        <dt><img src={child.avatar} /></dt>
+                                        <dt><img src={window.WebIM.config.getAvatarByOpenId+child.openId} /></dt>
                                         <dd>{child.name}</dd>
                                         <dd hidden='none'>child.openid</dd>
                                     </dl>
@@ -46,7 +46,7 @@ class GroupMember extends Component {
                             )
                         }
                     </div>
-                    <div className="text-center"><button className="btn_message m-t-lg" type="button" name="message" onClick={() => showMessage(openId)}>发消息</button></div>
+                    <div className="text-center"><button className="btn_message m-t-lg" type="button" name="message" onClick={() => showMessage({openId,isGroup:1})}>发消息</button></div>
                 </div>
 
             )
@@ -58,10 +58,12 @@ const mapStateToProps = (state) => {
     let groups = state.groups.filter(x => x.openId === openId)
     let groupMember = []
     let groupName = ''
+    let avatar=''
     let userInfo = state.userInfo
     let userOpenIds = userInfo.map(x => x.openId)   //所有用户的openId数组，查询用户所在位置用
     
     if (groups != null && groups[0] != null) {
+        avatar=groups[0].avatar
         groupName = groups[0].name
         if (groups[0].members != null)
             groupMember = groups[0].members.map(x => {
@@ -75,7 +77,7 @@ const mapStateToProps = (state) => {
     console.log("000000000000000")
     console.log(groups)
     console.log(groupMember)
-    return { openId, groupMember, groupName }
+    return { openId, groupMember, groupName,avatar }
 }
 
 const mapDispatchToProps = {

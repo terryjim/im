@@ -13,7 +13,10 @@ let App = ({initialised}) => {
         <Main />
       </div>)
   else
-    return <div>数据加载中，请稍后……</div>
+    return (<div className="loading">
+        <img src="./img/loading.gif"/>
+        <p>正在更新数据，请稍后...</p>
+	</div>)
 }
 
 

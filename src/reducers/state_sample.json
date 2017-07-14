@@ -43,6 +43,7 @@
     "messages": [{
         "openId": "0000000000000b7b",
         "userName": "钱钱钱钱",
+        "avatar": "0000000000000b7b", //个人用户可以为空，字段值与openId一致
         "newMsgs": 12, //未读消息数
         "lastReceived": 1498640400, //最后一条接收时的时间戳
         "type": 0, //0:个人1：群组
@@ -72,5 +73,16 @@
             "newMsg": true,
             "received": "2017-07-10 16:37:42.901"
         }]
+    }],
+    "friends": ["0000000000000b70"],
+    "userInfo": [{
+        "cards": [{
+            "companyName": "蓝筹科技",
+            "title": "总经理"
+        }],
+        "email": "yong.liu@bluechips.net.cn",
+        "mobile": "13349957888",
+        "name": "刘勇",
+        "openId": "0000000000000b64"
     }]
 }

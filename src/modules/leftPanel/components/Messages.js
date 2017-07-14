@@ -11,7 +11,7 @@ const Messages = ({ messages, onMessageClick, hidden, selectedItem}) => (
             <Message
                 key={msg.openId}
                 {...msg}
-                onMessageClick={() => onMessageClick(msg.openId)}
+                onMessageClick={() => onMessageClick({openId:msg.openId,isGroup:msg.type})}
                 selected={selectedItem==msg.openId}  
             />):null
 

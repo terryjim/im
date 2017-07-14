@@ -10,13 +10,13 @@ import TreeView from '../../../utils/react-treeview';
 
 */
 class Corps extends Component {
-    componentWillMount() {
+  /*  componentWillMount() {
         //如果没有组织架构信息则更新数据
         console.log("如果没有组织架构信息则更新数据")
         if (this.props.corps == null || this.props.corps.length === 0) {
             this.props.fetchCorps()
         }
-    }
+    }*/
     render() {
         const { hidden, corps, onUserClick } = this.props
         console.log(corps)

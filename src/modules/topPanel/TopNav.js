@@ -18,6 +18,7 @@ let TopNav = ({ dispatch, selectTab, newMsgs }) =>
 const mapStateToProps = (state) => {
     let selectTab = state.topNav
     let newMsgs = 0;
+    console.log(state.messages)
     if (state.messages != null && state.messages.length > 0) {
         state.messages.forEach(x => newMsgs += (x.newMsgs == null || isNaN(x.newMsgs)) ? 0 : x.newMsgs)
     }

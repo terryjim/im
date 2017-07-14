@@ -1,4 +1,11 @@
 let WebIM = window.WebIM
+//返回左侧导航栏当前选中的群组
+export const showGroupMember = (openId) => ({
+  type: 'SHOW_GROUPMEMBER',
+  openId
+})
+
+//fetchGroups-->fetchGroupAvatar-->fetchGroupMember
 //根据异步查询数据获取群组列表信息
 export const getGroups = (json) => {
   console.log('获取群组信息')  
@@ -51,8 +58,10 @@ const fetchGroupsAvatar = (groups) => dispatch => {
         result = json.Data.map(x => ({ iconUrl: x.IconUrl }))       
         groups.forEach((x,index)=> {
           x.avatar=result[index].iconUrl
+          dispatch(fetchGroupMember(x.openId))
         })        
         return dispatch(getGroups(groups))
+        //return dispatch(fetchGroupMember(groups))
       }
       else {
         alert("获取群组头像信息出错！")
@@ -61,23 +70,8 @@ const fetchGroupsAvatar = (groups) => dispatch => {
     })
 }
 
-//返回左侧导航栏当前选中的群组
-export const showGroupMember = (openId) => ({
-  type: 'SHOW_GROUPMEMBER',
-  openId
-})
 
-//根据异步查询数据获取群组成员列表信息
-export const getGroupMember = (openId,json) => {
-  console.log('getGroupMember')
-  console.log(json)
-  return ({
-    type: 'GET_GROUPMEMBER',
-    openId,
-    groupMember: json,
-    receivedAt: Date.now()
-  })
-}
+
 export const fetchGroupMember = (groupId) => dispatch => {
   console.log('开始获取群组成员')  
   //dispatch(showGroupMember(groupId))   //左侧群组列表选中焦点
@@ -118,7 +112,7 @@ export const fetchGroupMember2 = (groupId,groupMember) => dispatch => {
     .then(json => {
       if (json.status === 2000) {
         let list = json.data; console.log(list);
-        list = list.map(child => ({ openId: child.openid, avatar: WebIM.config.getAvatarByOpenId + child.openid, name: child.realname, mobile: child.username, email: child.email }))
+        list = list.map(child => ({ openId: child.openid, name: child.realname, mobile: child.username, email: child.email }))
         list.sort((param1, param2) => (param1.name).localeCompare(param2.name))
         return dispatch(getGroupMember(groupId,list))
       }
@@ -128,7 +122,17 @@ export const fetchGroupMember2 = (groupId,groupMember) => dispatch => {
       }
     })
 }
-
+//根据异步查询数据获取群组成员列表信息
+export const getGroupMember = (openId,json) => {
+  console.log('getGroupMember')
+  console.log(json)
+  return ({
+    type: 'GET_GROUPMEMBER',
+    openId,
+    groupMember: json,
+    receivedAt: Date.now()
+  })
+}
 function convertObjectToFormData(obj) {
   var formData = new FormData();
   for (var key in obj) {

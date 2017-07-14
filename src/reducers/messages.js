@@ -3,7 +3,7 @@ sample_state:
 [
     {
         openId: '0000000000000b7b',
-        userName: '钱钱钱钱',
+     //   userName: '钱钱钱钱',
         newMsgs: 12,//未读消息数
         lastReceived: 1498640400,//最后一条接收时的时间戳
         type: 0,//0:个人1：群组
@@ -21,8 +21,8 @@ sample_state:
         ]
     }, {
         openId: '0000000000000b7b',
-        avatar: "1",
-        userName: '钱钱钱钱',
+    //    avatar: "1",
+    //    userName: '钱钱钱钱',
         newMsgs: 12,//未读消息数
         lastReceived: "2017-07-10 16:37:42.901",
         type: 1,//0:用户1：群组
@@ -41,7 +41,7 @@ sample_state:
     }
 ]*/
 //异步获取所有消息列表
-const messages = (state = null, action) => {
+const messages = (state = [], action) => {
     //state中消息列表所有的openID
     let msgOpenIds = new Array();
     if (state != null)
@@ -72,38 +72,41 @@ const messages = (state = null, action) => {
             }
             )
             return state;*/
-        case 'SHOW_MESSAGE':  //取消未读状态  
+        case 'SHOW_MESSAGE':
+            //显示所选用户消息、打开对话界面，若不存在该用户消息则创建一条记录，取消未读状态
+           //action: (type:'SHOW_MESSAGE'，{openId,userName,isGroup=false})     
             if (state == null) {
                 return [{
-                    openId: action.openId,
-                    userName: action.userName,
+                    openId: action.openId,                   
                     newMsgs: 0,//未读消息数
                     lastReceived: null,
-                    type: action.isGroup ? 1 : 0,
+                    type: action.isGroup ? 1 : 0,                    
                     msgs: []
                 }]
             }
-            else {
+            else {                
                 let found = false;
+                debugger
                 let newState = state.map(x => {
-                    if (x.openId === action.openId && x.type === (action.isGroup?1:0)) {  //未处理群组和用户存在openId相同的情况
+                    if (x.openId === action.openId && x.type === (action.isGroup ? 1 : 0)) {
                         found = true
-                        x.newMsgs = 0
-                    }
+                        return { ...x, newMsgs: 0 }
+                    } else
+                        return x
                 })
                 if (!found) {
                     newState.push({
-                        openId: action.openId,
-                        userName: action.userName,
+                        openId: action.openId,                       
                         newMsgs: 0,//未读消息数
                         lastReceived: null,
-                        type: action.isGroup,
+                        type: action.isGroup ? 1 : 0,                        
                         msgs: []
                     })
                 }
+                console.log(newState)
                 return newState
-            }          
-
+            }
+        //接收到新消息
         case 'RECEIVE_MESSAGE':
             let receivedMsg = {}
             message = action.message
@@ -118,21 +121,41 @@ const messages = (state = null, action) => {
             receivedMsg.data = message.data
             receivedMsg.newMsg = true
             if (message.type.indexOf('group') === 0) {//群组消息
-                state.map(x => {
-                    if (x.openId === message.to) {
-                        x.msgs.push(receivedMsg)
-                        x.newMsgs++
-                        x.lastReceived = receivedMsg.received
-                    }
-                })
+                if (state.length === 0 || (state.map(x => x.openId)).indexOf(message.to) < 0) {
+                    state.push({
+                        openId: message.to,
+                        newMsgs: 1,//未读消息数                   
+                        type: 1,
+                        msgs: [receivedMsg],
+                        lastReceived: receivedMsg.received
+                    })
+                } else
+                    state.map(x => {
+                        if (x.openId === message.to) {
+                            x.msgs.length===0?x.msgs=receivedMsg:x.msgs.push(receivedMsg)
+                            x.newMsgs++
+                            x.lastReceived = receivedMsg.received
+                        }
+                    })
             } else {//个人消息
-                state.map(x => {
-                    if (x.openId === message.from) {
-                        x.msgs.push(receivedMsg)
-                        x.newMsgs++
-                        x.lastReceived = receivedMsg.received
-                    }
-                })
+                //如果消息列表为空或消息列表中没有当前发送消息的用户则新增用户信息
+                if (state.length === 0 || (state.map(x => x.openId)).indexOf(message.from) < 0) {
+                    state.push({
+                        openId: message.from,
+                        newMsgs: 1,//未读消息数                   
+                        type: 0,
+                        msgs: [receivedMsg],
+                        lastReceived: receivedMsg.received
+                    })
+
+                } else
+                    state.map(x => {
+                        if (x.openId === message.from) {
+                            x.msgs.push(receivedMsg)
+                            x.newMsgs++
+                            x.lastReceived = receivedMsg.received
+                        }
+                    })
             }
 
             state.sort((x, y) => {

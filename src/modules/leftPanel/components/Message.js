@@ -5,16 +5,16 @@ import {convertDate} from '../../../utils'
 const Message = (message) => (
 
   <li onClick={message.onMessageClick} className={message.selected ? "active" : ''}>
-    <div className="webim_portrait"><img src={message.avatar} /></div>
+    <div className="webim_portrait"><img src={message.type===0?window.WebIM.config.getAvatarByOpenId+message.openId:'../../img/avatar/'+message.avatar+'.png'}/></div>
     <div className="webim_contact_info">
       <p className="webim_contact_username">
         <span className="title">{message.userName}</span>
         <span className="webim_contact_time">{convertDate(message.lastReceived,'yy/MM/dd')}</span>
       </p>
       <p>
-        <span className="webim_contact_p">{message.msgs == null ? '' : message.msgs.length > 0 ? message.msgs[message.msgs.length - 1].data : ''}</span>
+        <span className="webim_contact_p">{message.msgs == null ? '' : message.msgs.length > 0 ? (message.type===0?message.msgs[message.msgs.length - 1].data:message.msgs[message.msgs.length - 1].fromUser+'：'+message.msgs[message.msgs.length - 1].data): ''}</span>
         <span className="webim_contact_time"><span className="list_message_tips" style={{
-          display: message.newMsgs == null || message.newMsgs == '' || message.newMsgs == 0 ? 'none' : 'block'
+          display: message.newMsgs === null || message.newMsgs === '' || message.newMsgs === 0 ? 'none' : 'block'
         }}>{message.newMsgs}</span></span>
       </p>
     </div>
