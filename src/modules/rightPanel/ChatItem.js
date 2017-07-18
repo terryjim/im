@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { convertDate } from '../../utils'
 import { connect } from 'react-redux'
 import { appendSent } from '../../actions/message'
-import {utils} from 'easemob-websdk'
+import { utils } from 'easemob-websdk'
+import {convertEmoji} from '../../utils'
 //消息窗口  
 /*
 消息内容格式：
@@ -29,73 +30,48 @@ class ChatItem extends Component {
     componentDidUpdate() {
         this.chatwindow.scrollTop = this.chatwindow.scrollHeight//消息窗口滚动条自动移到最下方       
     }
-     fileChange=()=> {
-         debugger
-        var me = this,
-            uid = window.WebIM.conn.getUniqueId(),
+    fileChange = () => {
+        //debugger
+        //var me = this,       
+        let uid = window.WebIM.conn.getUniqueId(),
             msg = new window.WebIM.message('file', uid),
             chatroom = window.WebIM.selectedCate === 'chatrooms',
-            file =utils.getFileUrl(me.refs.file),
-            fileSize = utils.getFileSize(me.refs.file),
-            fileLength =utils.getFileLength(me.refs.file),
+            file = utils.getFileUrl(this.file),
+            fileSize = utils.getFileSize(this.file),
+            fileLength = utils.getFileLength(this.file),
             filename = file.filename;
-
-        if (!fileSize) {
-             window.WebIM.api.NotifyError( window.WebIM.lan.fileOverSize);
+        let allowType = window.WebIM.config.allowFileType
+      /*  if (!fileSize) {
+            window.WebIM.api.NotifyError(window.WebIM.lan.fileOverSize);
             return false;
         }
-
         if (!file.filename) {
-            me.refs.file.value = null;
+            this.file.value = null;
             return false;
+        }*/
+        if (file.filetype.toLowerCase() in allowType) {
+            let option = {
+                apiUrl: window.WebIM.config.apiURL,
+                file: file,
+                to: this.props.sendTo,                       // 接收消息对象
+                roomType: false,
+                chatType: 'singleChat',
+                onFileUploadError: function () {      // 消息上传失败
+                    console.log('onFileUploadError');
+                },
+                onFileUploadComplete: function () {   // 消息上传成功
+                    console.log('onFileUploadComplete');
+                },
+                success: function () {                // 消息发送成功
+                    console.log('Success');
+                },
+                flashUpload: window.WebIM.flashUpload
+            };
+            msg.set(option);
+            window.WebIM.conn.send(msg.body);
         }
-        msg.set({
-            apiUrl:  window.WebIM.conn.apiUrl,
-            file: file,
-            filename: filename,
-            to:  window.WebIM.selected,
-            file_length: 3424134,
-            roomType: chatroom,
-            ext: {
-                fileSize: fileSize,
-                file_length: fileLength
-            },
-            onFileUploadError: function (error) {
-                me.refs.file.value = null;
-                var option = {
-                    data:  window.WebIM.lan.sendFileFailed,
-                    from:  window.WebIM.user,
-                    to:  window.WebIM.selected
-                };
-                 window.WebIM.api.addToChatRecord(option, 'txt');
-                 window.WebIM.api.appendMsg(option, 'txt');
-            },
-            onFileUploadComplete: function (data) {
-                var url = ((window.location.protocol != 'https:' && window.WebIM.config.isHttpDNS) ? ( window.WebIM.conn.apiUrl + data.uri.substr(data.uri.indexOf("/", 9))) : data.uri) + '/' + data.entities[0].uuid;
-                me.refs.file.value = null;
-                var option = {
-                    data: url,
-                    filename: filename,
-                    from:  window.WebIM.user,
-                    to:  window.WebIM.selected,
-                    id: uid
-                };
-                console.log('FileChange upload completed: ', option);
-                console.log('Data: ', data);
-                 window.WebIM.api.addToChatRecord(option, 'file');
-                 window.WebIM.api.appendMsg(option, 'file');
-            },
-            success: function (id) {
-            },
-            flashUpload: window.WebIM.flashUpload
-        });
-        if ( window.WebIM.selectedCate === 'groups') {
-            msg.setGroup( window.WebIM.groupType);
-        } else if (chatroom) {
-            msg.setGroup( window.WebIM.groupType);
-        }
-         window.WebIM.conn.send(msg.body);
     }
+
     render() {
         // let msgs = this.props.chat.msgs       
         let msgsAll = this.props.msgsAll
@@ -120,8 +96,9 @@ class ChatItem extends Component {
                     <div className={isMe ? "webim_portrait pull-right m-l-sm" : "webim_portrait m-r-sm"}><img src={isMe ? window.WebIM.config.getAvatarByOpenId + window.WebIM.config.openId : window.WebIM.config.getAvatarByOpenId + msg.from} /></div>
                     {thisMsg.type == 0 || isMe ? '' : <div className="msg_bubble_name pull-left m-l-sm">{msg.fromUser}</div>}
                     <div className={isMe ? "bubble_arrow rotate" : "bubble_arrow"}></div>
-                    <div className="bubble_cont"  dangerouslySetInnerHTML={{__html: convertEmoji(msg.data)
-                }}>
+                    <div className="bubble_cont" dangerouslySetInnerHTML={{
+                        __html: convertEmoji(msg.data)
+                    }}>
                     </div>
                 </div>)
             })
@@ -143,13 +120,29 @@ class ChatItem extends Component {
                     </div>
                     <div className="webim-send-wrapper">
                         <div className="webim-chatwindow-options">
+                           {/* <!--选择表情包start-->*/}
+                <div class="face-wrapper">
+                	<h5>经典表情</h5>
+                   {/* <!--表情包start-->*/}
+                	<ul className="face-container" ref={face_box=>this.face_box=face_box}>
+                        {new Array(76).map((x,index)=>{
+                                this.face_box.append('<li><a href="#"><img src="img/emoji/'+(index+1)+'.gif"/></a></li>')
+                            })}
+						
+                    </ul>
+                   {/* <!--表情包end-->*/}
+                    <ul className="face-footer">
+                    	<li><a href="#" class="active"><img src="img/emoji/face-icon.png"/></a></li>
+                    </ul>
+                </div>
+                {/*<!--选择表情包end-->*/}
                             <a href="#"><span className="icon-smiling-face"></span></a>
                             <a href="#"><span className="icon-picture"></span></a>
-                            <a href="#" ><span className="icon-adjunct"></span></a>
-                            <input ref = 'file'
-                        onChange = {this.fileChange}
-                        type = 'file'
-                        className = 'hide2' />
+                            <a href="#" onClick={() => this.file.click()}><span className="icon-adjunct"></span></a>
+                            <input ref={file => this.file = file}
+                                onChange={this.fileChange}
+                                type='file'
+                                className='hide' />
                             <a href="#"><span className="icon-audio"></span></a>
                         </div>
                         <textarea ref={textarea => {
@@ -241,15 +234,3 @@ const convertMessages = (messages, userInfos, groups) => {
     ))
 }
 
-//转换表情
-const convertEmoji = (msg) => {
-    let emoji = window.WebIM.emoji
-    console.log(emoji)
-    for (let face in emoji) {
-        while (msg.indexOf(face) > -1) {
-            msg = msg.replace(face, '<img src="../../img/faces/' + emoji[face] + '" />');
-        }
-    }
-    debugger
-    return msg
-}

@@ -270,8 +270,11 @@ a:focus {
 
 
 .webim_chat {
+	width:calc(100% - 20px);
+	float:left;
+	box-shadow:0 0 15px #ccc;
 	min-width: 700px;
-	padding:0 20px;
+	margin:10px;
 }
 /*头部指南*/
 .im_header {
@@ -309,12 +312,13 @@ a:focus {
 }
 /*左边列表*/
 .webim_leftbar {
-	width: 250px;
+	width: 251px;
 	height: 550px;
-	background: #fff;
+	background: #f1f1f1;
 	float:left;
 	border-bottom-left-radius:3px;
 	position:relative;
+	border-right:1px #ececec solid;
 }
 	/*消息列表*/
 .webim_leftbar_message{
@@ -329,7 +333,7 @@ a:focus {
 	padding: 10px;
 }
 .webim_leftbar_message li:hover, .webim_leftbar_message li.active {
-	background: #f1f3f7;
+	background: #e2e2e2;
 	cursor: pointer;
 }
 .webim_leftbar_message p {
@@ -376,6 +380,10 @@ a:focus {
 	width:130px;
 	float:left;
 	font-size:12px;
+}
+.webim_contact_p img{
+	width:20px;
+	height:20px;
 }
 
 		/*未读消息提示*/
@@ -475,22 +483,28 @@ ul.expmenu li div.header.active {
 	background: url(../img/arrow_d.png) no-repeat 10px center;
 }
 ul.expmenu li div.header.active:hover {
-	background: url(../img/arrow_d.png) no-repeat 10px center #f2f3f7;
+	background: url(../img/arrow_d.png) no-repeat 10px center #e2e2e2;
 }
 ul.expmenu li ul > li {
 	color: #3d464a;
 	padding:0 20px;	
 }
+/*组织架构 树结构*/
+.tree-view_item:hover, .tree-view_children .info:hover {
+	background: #e2e2e2 !important;
+}
+
+
 
 /* 鼠标滑过背景 */
 ul.expmenu div.header:hover {
-	background: url(../img/arrow_u.png) no-repeat 10px center #f2f3f7;/* Old browsers */
+	background: url(../img/arrow_u.png) no-repeat 10px center #e2e2e2;/* Old browsers */
 }
 ul.expmenu li ul li:hover {
-	background: #f2f3f7;/* Old browsers */
+	background: #e2e2e2;/* Old browsers */
 }
 ul.expmenu li ul li:active {
-	background: #f2f3f7;/* Old browsers */
+	background: #e2e2e2;/* Old browsers */
 }
 
 
@@ -499,7 +513,7 @@ ul.expmenu li ul li:active {
 .webim_rightbar  {
 	position: relative;
     float: left;
-    width: calc(100% - 250px);
+    width: calc(100% - 251px);
 	height: 550px;
 	background: url(../img/webim_chatwindow_logo.png) no-repeat center #f9f9f9;
 	border-bottom-right-radius:3px;
@@ -601,7 +615,7 @@ ul.expmenu li ul li:active {
 .user_info_content{
 	padding:0 35px;
 	height:370px;
-	overflow-y:scroll;
+	overflow-y:auto;
 	margin-top:22px;
 	text-align:justify;
 	/*text-align-last:justify;*/

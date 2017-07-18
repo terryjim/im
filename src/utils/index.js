@@ -7,3 +7,13 @@ export const convertDate = (date,format='yyyy-MM-dd hh:mm:ss') => {
   else
     return new Date(date).Format(format)
 }
+//转换表情
+export const convertEmoji = (msg,baseHref='<img src="../../img/faces/') => {
+    let emoji = window.WebIM.emoji   
+    for (let face in emoji) {
+        while (msg.indexOf(face) > -1) {
+            msg = msg.replace(face, baseHref + emoji[face] + '" />');
+        }
+    }   
+    return msg
+}

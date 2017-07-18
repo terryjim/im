@@ -119,6 +119,16 @@ WebIM.config = {
     getDeptsUrl: 'http://capi.s-plus.cn/api/v2/org/structure',
     getGroupAvatarUrl: 'http://cs-publish-api.s-plus.cn/CommonData/v2/chatgroup/addinfo',
     baseHref:'http://localhost:3000',
+    allowFileType:{    //上传附件格式，如果为空则所有文件均可上传
+        'jpg': true,
+        'gif': true,
+        'png': true,
+        'bmp': true,
+        'zip': true,
+        'txt': true,
+        'doc':true,
+        'pdf': true
+    }
     /* corpStructure: [
          {1123:[{a:1}]},
          {1124:[{a:1124}]}
