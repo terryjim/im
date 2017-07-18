@@ -5,7 +5,7 @@ import {convertDate} from '../../../utils'
 const Message = (message) => (
 
   <li onClick={message.onMessageClick} className={message.selected ? "active" : ''}>
-    <div className="webim_portrait"><img src={message.type===0?window.WebIM.config.getAvatarByOpenId+message.openId:'../../img/avatar/'+message.avatar+'.png'}/></div>
+    <div className="webim_portrait"><img src={message.type===0?window.WebIM.config.getAvatarByOpenId+message.openId:window.WebIM.config.baseHref+'/img/avatar/'+message.avatar+'.png'}/></div>
     <div className="webim_contact_info">
       <p className="webim_contact_username">
         <span className="title">{message.userName}</span>

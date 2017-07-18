@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { convertDate } from '../../utils'
 import { connect } from 'react-redux'
 import { appendSent } from '../../actions/message'
+import {utils} from 'easemob-websdk'
 //消息窗口  
 /*
 消息内容格式：
@@ -27,6 +28,73 @@ import { appendSent } from '../../actions/message'
 class ChatItem extends Component {
     componentDidUpdate() {
         this.chatwindow.scrollTop = this.chatwindow.scrollHeight//消息窗口滚动条自动移到最下方       
+    }
+     fileChange=()=> {
+         debugger
+        var me = this,
+            uid = window.WebIM.conn.getUniqueId(),
+            msg = new window.WebIM.message('file', uid),
+            chatroom = window.WebIM.selectedCate === 'chatrooms',
+            file =utils.getFileUrl(me.refs.file),
+            fileSize = utils.getFileSize(me.refs.file),
+            fileLength =utils.getFileLength(me.refs.file),
+            filename = file.filename;
+
+        if (!fileSize) {
+             window.WebIM.api.NotifyError( window.WebIM.lan.fileOverSize);
+            return false;
+        }
+
+        if (!file.filename) {
+            me.refs.file.value = null;
+            return false;
+        }
+        msg.set({
+            apiUrl:  window.WebIM.conn.apiUrl,
+            file: file,
+            filename: filename,
+            to:  window.WebIM.selected,
+            file_length: 3424134,
+            roomType: chatroom,
+            ext: {
+                fileSize: fileSize,
+                file_length: fileLength
+            },
+            onFileUploadError: function (error) {
+                me.refs.file.value = null;
+                var option = {
+                    data:  window.WebIM.lan.sendFileFailed,
+                    from:  window.WebIM.user,
+                    to:  window.WebIM.selected
+                };
+                 window.WebIM.api.addToChatRecord(option, 'txt');
+                 window.WebIM.api.appendMsg(option, 'txt');
+            },
+            onFileUploadComplete: function (data) {
+                var url = ((window.location.protocol != 'https:' && window.WebIM.config.isHttpDNS) ? ( window.WebIM.conn.apiUrl + data.uri.substr(data.uri.indexOf("/", 9))) : data.uri) + '/' + data.entities[0].uuid;
+                me.refs.file.value = null;
+                var option = {
+                    data: url,
+                    filename: filename,
+                    from:  window.WebIM.user,
+                    to:  window.WebIM.selected,
+                    id: uid
+                };
+                console.log('FileChange upload completed: ', option);
+                console.log('Data: ', data);
+                 window.WebIM.api.addToChatRecord(option, 'file');
+                 window.WebIM.api.appendMsg(option, 'file');
+            },
+            success: function (id) {
+            },
+            flashUpload: window.WebIM.flashUpload
+        });
+        if ( window.WebIM.selectedCate === 'groups') {
+            msg.setGroup( window.WebIM.groupType);
+        } else if (chatroom) {
+            msg.setGroup( window.WebIM.groupType);
+        }
+         window.WebIM.conn.send(msg.body);
     }
     render() {
         // let msgs = this.props.chat.msgs       
@@ -77,7 +145,11 @@ class ChatItem extends Component {
                         <div className="webim-chatwindow-options">
                             <a href="#"><span className="icon-smiling-face"></span></a>
                             <a href="#"><span className="icon-picture"></span></a>
-                            <a href="#"><span className="icon-adjunct"></span></a>
+                            <a href="#" ><span className="icon-adjunct"></span></a>
+                            <input ref = 'file'
+                        onChange = {this.fileChange}
+                        type = 'file'
+                        className = 'hide2' />
                             <a href="#"><span className="icon-audio"></span></a>
                         </div>
                         <textarea ref={textarea => {
