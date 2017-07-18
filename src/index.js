@@ -42,7 +42,8 @@ conn.listen({
         console.log(message)
         store.dispatch(receiveMessage(message))
     },    //收到文本消息
-    onEmojiMessage: function (message) { console.log(message) },   //收到表情消息
+    onEmojiMessage: function (message) {  console.log(message)
+       },   //收到表情消息
     onPictureMessage: function (message) { console.log(message) }, //收到图片消息
     onCmdMessage: function (message) { console.log(message) },     //收到命令消息
     onAudioMessage: function (message) { console.log(message) },   //收到音频消息
@@ -90,7 +91,7 @@ const store = createStore(reducers, undefined,
         applyMiddleware(thunk),
         autoRehydrate()
     ))
-//persistStore(store)
+persistStore(store)
 
 //获取组织架构
 if (store.getState().corps == null)

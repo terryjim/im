@@ -37,7 +37,7 @@ const userInfo = (state = [], action) => {
                             else {
                                 //已存在用户信息，判断有没相同公司的名片，如果没有则插入
                                 let oldUser = state[openIds.indexOf(user.openId)]
-                                if (oldUser.cards === null || oldUser.cards.length === 0) {
+                                if (oldUser.cards == null ||  oldUser.cards.length === 0) {
                                     state[openIds.indexOf(user.openId)].cards = [{ companyId: element.companyId, companyName: element.companyName, title: user.title, departName: dep.name }]
                                 } else if (oldUser.cards.map(x => x.companyName).indexOf(element.companyName) < 0) {
                                     state[openIds.indexOf(user.openId)].cards.push({ companyId: element.companyId, companyName: element.companyName, title: user.title, departName: dep.name })
