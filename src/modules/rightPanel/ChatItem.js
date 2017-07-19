@@ -3,7 +3,7 @@ import { convertDate } from '../../utils'
 import { connect } from 'react-redux'
 import { appendSent } from '../../actions/message'
 import { utils } from 'easemob-websdk'
-import {convertEmoji} from '../../utils'
+import { convertEmoji } from '../../utils'
 //消息窗口  
 /*
 消息内容格式：
@@ -27,6 +27,10 @@ import {convertEmoji} from '../../utils'
     */
 
 class ChatItem extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { toggle: true }
+    }
     componentDidUpdate() {
         this.chatwindow.scrollTop = this.chatwindow.scrollHeight//消息窗口滚动条自动移到最下方       
     }
@@ -41,14 +45,14 @@ class ChatItem extends Component {
             fileLength = utils.getFileLength(this.file),
             filename = file.filename;
         let allowType = window.WebIM.config.allowFileType
-      /*  if (!fileSize) {
-            window.WebIM.api.NotifyError(window.WebIM.lan.fileOverSize);
-            return false;
-        }
-        if (!file.filename) {
-            this.file.value = null;
-            return false;
-        }*/
+        /*  if (!fileSize) {
+              window.WebIM.api.NotifyError(window.WebIM.lan.fileOverSize);
+              return false;
+          }
+          if (!file.filename) {
+              this.file.value = null;
+              return false;
+          }*/
         if (file.filetype.toLowerCase() in allowType) {
             let option = {
                 apiUrl: window.WebIM.config.apiURL,
@@ -71,8 +75,19 @@ class ChatItem extends Component {
             window.WebIM.conn.send(msg.body);
         }
     }
+    appendEmoji = () => {
+        let emojis = new Array(35)
+      
+        for (let i = 1; i < 36; i++) {
+            /*emojis[i] = <li><a href='#'><img src={'../../img/emoji/' + (i + 1) + '.gif'} /></a></li>*/
+            // console.log(findEmoji(i))
+            emojis[i] = <li key={i} onClick={()=>this.content.value +=findEmoji(i)}><a href='#'><img src={'../../img/faces/ee_' + i + '.png'} /></a></li>
+        }
+        return emojis
+    }
 
     render() {
+        console.log(this.state);
         // let msgs = this.props.chat.msgs       
         let msgsAll = this.props.msgsAll
         msgsAll = msgsAll.filter(x => x.openId == this.props.sendTo)
@@ -108,7 +123,7 @@ class ChatItem extends Component {
             <div style={{
                 display: this.props.hidden ? 'none' : ''
             }}>
-                <div className="webim_chatwindow">
+                <div className="webim_chatwindow" onClick={e => { this.setState({ toggle: true }) }}>
                     <div className="user_info_header">
                         <h3 id="name">{thisMsg.userName}<small className="icon_chat"><i className="fa fa-comment"></i></small></h3>
                     </div>
@@ -119,24 +134,23 @@ class ChatItem extends Component {
                         </div>
                     </div>
                     <div className="webim-send-wrapper">
+                        {/* <!--选择表情包start-->*/}
+                        <div className="face-wrapper" style={{
+                            display: this.state.toggle ? 'none' : 'block'
+                        }}>
+                            <h5>经典表情{this.state.toggle}</h5>
+                            {/* <!--表情包start-->*/}
+                            <ul className="face-container" >
+                                {this.appendEmoji()}
+                            </ul>
+                            {/* <!--表情包end-->*/}
+                            <ul className="face-footer">
+                                <li><a href="#" className="active"><img src="../../../img/emoji/face-icon.png" /></a></li>
+                            </ul>
+                        </div>
+                        {/*<!--选择表情包end-->*/}
                         <div className="webim-chatwindow-options">
-                           {/* <!--选择表情包start-->*/}
-                <div class="face-wrapper">
-                	<h5>经典表情</h5>
-                   {/* <!--表情包start-->*/}
-                	<ul className="face-container" ref={face_box=>this.face_box=face_box}>
-                        {new Array(76).map((x,index)=>{
-                                this.face_box.append('<li><a href="#"><img src="img/emoji/'+(index+1)+'.gif"/></a></li>')
-                            })}
-						
-                    </ul>
-                   {/* <!--表情包end-->*/}
-                    <ul className="face-footer">
-                    	<li><a href="#" class="active"><img src="img/emoji/face-icon.png"/></a></li>
-                    </ul>
-                </div>
-                {/*<!--选择表情包end-->*/}
-                            <a href="#"><span className="icon-smiling-face"></span></a>
+                            <a href="#" onClick={e => { this.setState({ toggle: !this.state.toggle }); e.stopPropagation() }}><span className="icon-smiling-face"></span></a>
                             <a href="#"><span className="icon-picture"></span></a>
                             <a href="#" onClick={() => this.file.click()}><span className="icon-adjunct"></span></a>
                             <input ref={file => this.file = file}
@@ -191,6 +205,20 @@ const sendMsg = (chatType, msgType, openId, content, dispatch, func) => {
     window.WebIM.conn.send(msg.body);
 
 }
+const findEmoji = (index) => {
+    debugger
+    let emojis = window.WebIM.emoji
+    let found = false
+    for (let key in emojis) {
+        if ("ee_" + index + ".png" === emojis[key]) {
+            return key
+        }
+    }
+    return ''
+}
+
+
+
 const mapStateToProps = (state) => {
     let msgsAll = convertMessages(state.messages, state.userInfo, state.groups)
     return { msgsAll }

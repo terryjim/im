@@ -765,7 +765,7 @@ ul.expmenu li ul li:active {
 
 	/*聊天表情包*/
 .face-wrapper{
-	width:460px;
+	width:300px;
 	background:#fff;
 	box-shadow:0 0 10px #868686;
 	position:absolute;
