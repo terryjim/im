@@ -48,7 +48,7 @@ conn.listen({
     onCmdMessage: function (message) { console.log(message) },     //收到命令消息
     onAudioMessage: function (message) { console.log(message) },   //收到音频消息
     onLocationMessage: function (message) { console.log(message) },//收到位置消息
-    onFileMessage: function (message) { console.log(message) },    //收到文件消息
+    onFileMessage: function (message) { console.log(message);store.dispatch(receiveMessage(message,'file')) },    //收到文件消息
     onVideoMessage: function (message) {
         var node = document.getElementById('privateVideo');
         var option = {
@@ -91,7 +91,7 @@ const store = createStore(reducers, undefined,
         applyMiddleware(thunk),
         autoRehydrate()
     ))
-persistStore(store)
+//persistStore(store)
 
 //获取组织架构
 if (store.getState().corps == null)

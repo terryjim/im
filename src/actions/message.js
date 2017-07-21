@@ -9,14 +9,15 @@ export const showMessage = ({openId,isGroup=false}) => {
 }
 
 
-export const receiveMessage = (message) => {
-    return ({ type: 'RECEIVE_MESSAGE', message })
+export const receiveMessage = (message,msgType='txt') => {
+    return ({ type: 'RECEIVE_MESSAGE', message,msgType })
 }
 
 //添加已发送的消息到消息列表
-export const appendSent = (message) => {
+export const appendSent = (message,msgType='txt') => {
     return ({
         type: 'APPEND_SENT',
-        message
+        message,
+        msgType
     })
 }

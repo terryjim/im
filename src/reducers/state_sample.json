@@ -45,7 +45,7 @@
         "userName": "钱钱钱钱",
         "avatar": "0000000000000b7b", //个人用户可以为空，字段值与openId一致
         "newMsgs": 12, //未读消息数
-        "lastReceived": 1498640400, //最后一条接收时的时间戳
+        "lastReceived": 1498640400, //最后一条接收时的时间戳       
         "type": 0, //0:个人1：群组
         "msgs": [{
             "data": "测试数据",
@@ -54,7 +54,11 @@
             "newMsg": false,
             "received": "2017-07-10 16:33:38.560", //接收时的时间  服务器端延迟消息：delay:"2017-06-29T02:37:39.187Z"
             "to": "0000000000000b7b",
-            "type": "singleChat"
+            "type": "singleChat",
+            "msgType": "txt", // txt\file消息类型
+            "url": "https://a1.easemob.com/bluechips/espformal/chatfiles/6bb38d40-6d2b-11e7-9374-3dcb2d32b3da", //附件地址
+            "fileName": "简历.doc",
+            "fileLength": "25kb"
         }]
     }, {
         "openId": "0000000000000b7b",

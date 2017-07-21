@@ -21,6 +21,7 @@ WebIM.config = {
      */
     //内网 appkey: 'bluechips#esp',
     appkey: 'bluechips#espformal',
+    
     /*Client ID：                    YXA6c8EC8ALYEeeskjnP8K_Mzg
     Client Secret：             YXA6RBG60rcAT9HkZsuhvsD64xEzzGU*/
     /*
@@ -58,7 +59,7 @@ WebIM.config = {
      * will auto connect the xmpp server autoReconnectNumMax times in background when client is offline.
      * won't auto connect if autoReconnectNumMax=0.
      */
-    autoReconnectNumMax: 2,
+    autoReconnectNumMax: 20,
     /**
      * the interval secons between each atuo reconnectting.
      * works only if autoReconnectMaxNum >= 2.
@@ -118,7 +119,7 @@ WebIM.config = {
     userCorps: [{ id: 1123, name: '蓝筹科技' }, { id: 1124, name: '中瑞恒德' }],//用户所在企业
     getDeptsUrl: 'http://capi.s-plus.cn/api/v2/org/structure',
     getGroupAvatarUrl: 'http://cs-publish-api.s-plus.cn/CommonData/v2/chatgroup/addinfo',
-    baseHref:'http://localhost:3000',
+    baseHref:'http://localhost:3000',//public文件夹地址，即图像等资源地址
     allowFileType:{    //上传附件格式，如果为空则所有文件均可上传
         'jpg': true,
         'gif': true,
@@ -127,7 +128,11 @@ WebIM.config = {
         'zip': true,
         'txt': true,
         'doc':true,
-        'pdf': true
+        'pdf': true,
+        'ppt':true,
+        'xls':true,
+        'docs':true,
+        'xlsx':true
     }
     /* corpStructure: [
          {1123:[{a:1}]},

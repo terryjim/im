@@ -271,10 +271,10 @@ a:focus {
 
 .webim_chat {
 	width:calc(100% - 20px);
-	float:left;
-	box-shadow:0 0 15px #ccc;
 	min-width: 700px;
+	float:left;
 	margin:10px;
+	box-shadow:0 0 15px #ccc;
 }
 /*头部指南*/
 .im_header {
@@ -427,7 +427,6 @@ a:focus {
 .renovate{
 	width:25px;
 	height:25px;
-	line-height:25px;
 	font-size:16px;
 	font-weight:normal;
 	text-align:center;
@@ -451,6 +450,9 @@ a:focus {
 	-moz-opacity:1; /*支持老版本的Mozilla*/
 	-khtml-opacity: 1; /*支持老版本的Safari*/
 }	
+.renovate i{
+	margin-top:4px;
+}
 	/*组织架构 树结构*/
 .tree_li li{
 	width:100%;
@@ -576,6 +578,8 @@ ul.expmenu li ul li:active {
 	border:1px #d5d5d5 solid;
 	color:#d5d5d5;
 }
+.btn-toggle a i{
+	margin-top:4px;}
 .btn_message{
 	width:138px;
 	height:36px;
@@ -590,9 +594,9 @@ ul.expmenu li ul li:active {
 }
 	/*群组成员*/
 .user_info_header{
-	line-height:60px;
 	padding:0 20px;
 	border-bottom:1px #ececec solid;
+	padding-bottom:8px;
 }
 .user_info_header h3{
 	font-size:20px;
@@ -601,6 +605,7 @@ ul.expmenu li ul li:active {
 .user_info_header h3 small{
 	float:right;
 	font-size:12px;
+	margin-top:5px;
 }
 .user_info_header h3 small i{
 	margin-right:5px;
@@ -658,7 +663,7 @@ ul.expmenu li ul li:active {
     width: 100%;
     z-index: 1;
     position: absolute;
-    top: 30px;
+    top: 41px;
     bottom: 160px;
     margin-top: 20px;
     overflow-x: hidden;
@@ -686,6 +691,62 @@ ul.expmenu li ul li:active {
     background: #EAEAEA;
 	text-align:left;
 }
+/*发送文件状态*/
+.send-file{
+	min-width:200px;
+	background:#fff;
+	margin-bottom:0;
+	padding:5px 0;
+	margin: -5px -10px;
+	border: 1px #ccc solid;
+	display:block;
+}
+.send-file p{
+	margin-bottom:0;
+	padding:0 10px;
+}
+.send-file p:first-child{
+	border-bottom:1px #e6e6e6 solid;
+	padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+.send-file p small:first-child, .line-block{
+	display:block;
+}
+.send-file p small{
+	color:#909090;
+}
+.send-file .text-success, .send-tips .text-success{
+	color:#5fb41b;
+}
+.send-file .text-danger{
+	color:#f74c31;
+}
+.send-file .text-danger{
+	color:#f74c31;
+}
+.send-load{
+	width:15px;
+	height:15px;
+}
+.send-file a:hover, .send-file a small:hover{
+	text-decoration:none;
+}
+.send-file a:hover, .send-file a:active{
+	color:#000;
+}
+.send-tips{
+	background:#e4e4e4;
+	padding:5px 10px;
+	border-radius:5px;
+	color:#909090;
+	display:inline-block;
+}
+.send-tips i{
+    font-size: 15px;
+    vertical-align: text-bottom;
+}
+
 .bubble_arrow{
     float: left;
     width: 6px;
@@ -765,7 +826,7 @@ ul.expmenu li ul li:active {
 
 	/*聊天表情包*/
 .face-wrapper{
-	width:300px;
+	width:460px;
 	background:#fff;
 	box-shadow:0 0 10px #868686;
 	position:absolute;

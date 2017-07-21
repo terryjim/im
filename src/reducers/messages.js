@@ -44,24 +44,24 @@ sample_state:
 const messages = (state = [], action) => {
     //state中消息列表所有的openID
     let msgOpenIds = new Array()
-    let message=null
+    let message = null
     if (state != null)
         state.forEach(x => msgOpenIds.push(x.openId))
     switch (action.type) {
-          case 'SHOW_MESSAGE':
+        case 'SHOW_MESSAGE':
             //显示所选用户消息、打开对话界面，若不存在该用户消息则创建一条记录，取消未读状态
-           //action: (type:'SHOW_MESSAGE'，{openId,userName,isGroup=false})     
+            //action: (type:'SHOW_MESSAGE'，{openId,userName,isGroup=false})     
             if (state == null) {
                 return [{
-                    openId: action.openId,                   
+                    openId: action.openId,
                     newMsgs: 0,//未读消息数
                     lastReceived: null,
-                    type: action.isGroup ? 1 : 0,                    
+                    type: action.isGroup ? 1 : 0,
                     msgs: []
                 }]
             }
-            else {                
-                let found = false;                
+            else {
+                let found = false;
                 let newState = state.map(x => {
                     if (x.openId === action.openId && x.type === (action.isGroup ? 1 : 0)) {
                         found = true
@@ -71,10 +71,10 @@ const messages = (state = [], action) => {
                 })
                 if (!found) {
                     newState.push({
-                        openId: action.openId,                       
+                        openId: action.openId,
                         newMsgs: 0,//未读消息数
                         lastReceived: null,
-                        type: action.isGroup ? 1 : 0,                        
+                        type: action.isGroup ? 1 : 0,
                         msgs: []
                     })
                 }
@@ -95,6 +95,14 @@ const messages = (state = [], action) => {
             receivedMsg.to = message.to
             receivedMsg.data = message.data
             receivedMsg.newMsg = true
+            receivedMsg.msgType = action.msgType  //文本、附件等消息类型
+            if (action.msgType === 'file') {
+                receivedMsg.url = message.url
+                receivedMsg.fileName = message.filename
+                receivedMsg.data = '文件'
+                receivedMsg.fileLength = message.file_length
+                receivedMsg.fileSize = message.ext.fileSize
+            }
             if (message.type.indexOf('group') === 0) {//群组消息
                 if (state.length === 0 || (state.map(x => x.openId)).indexOf(message.to) < 0) {
                     state.push({
@@ -107,7 +115,7 @@ const messages = (state = [], action) => {
                 } else
                     state.map(x => {
                         if (x.openId === message.to) {
-                            x.msgs.length===0?x.msgs=receivedMsg:x.msgs.push(receivedMsg)
+                            x.msgs.length === 0 ? x.msgs = receivedMsg : x.msgs.push(receivedMsg)
                             x.newMsgs++
                             x.lastReceived = receivedMsg.received
                         }
@@ -152,6 +160,7 @@ const messages = (state = [], action) => {
 
         case 'APPEND_SENT':
             //添加已发送的消息到消息列表
+            debugger
             let msg = {}
             message = action.message
             msg.received = new Date().Format("yyyy-MM-dd hh:mm:ss.S");
@@ -161,6 +170,14 @@ const messages = (state = [], action) => {
             msg.to = message.to
             msg.data = message.data
             msg.newMsg = false
+            msg.msgType = action.msgType  //文本、附件等消息类型
+            if (action.msgType === 'file') {
+                msg.url = message.url
+                msg.fileName = message.fileName
+                msg.data = '文件'
+                msg.fileLength = message.fileLength
+                msg.fileSize = message.fileSize
+            }
             if (message.type.indexOf('group') === 0) {//群组消息
                 state.map(x => {
                     if (x.openId === message.to) {

@@ -4,37 +4,17 @@ import { connect } from 'react-redux'
 import { appendSent } from '../../actions/message'
 import { utils } from 'easemob-websdk'
 import { convertEmoji } from '../../utils'
-//消息窗口  
-/*
-消息内容格式：
- {
-        openId: '0000000000000b7b',
-        userName: '钱钱钱钱',
-        newMsgs: 12,//未读消息数
-        lastReceived: 1498640400,//最后一条接收时的时间戳
-        msgs: [
-            {
-                id: "你好",
-                type: 'chat',
-                from:'',
-                to: ',',
-                data: '',
-                newMsg: true,
-                received: 1498640400//接收时的时间戳
-            }
-        ]
-    }
-    */
 
 class ChatItem extends Component {
     constructor(props) {
         super(props)
-        this.state = { toggle: true }
     }
     componentDidUpdate() {
         this.chatwindow.scrollTop = this.chatwindow.scrollHeight//消息窗口滚动条自动移到最下方       
     }
-    fileChange = () => {
+    //发送附件
+    fileChange = (chatType, sendTo, dispatch) => {
+        //chatType 0:个人1：群组  
         //debugger
         //var me = this,       
         let uid = window.WebIM.conn.getUniqueId(),
@@ -43,7 +23,8 @@ class ChatItem extends Component {
             file = utils.getFileUrl(this.file),
             fileSize = utils.getFileSize(this.file),
             fileLength = utils.getFileLength(this.file),
-            filename = file.filename;
+            fileName = file.filename;
+        this.file.value = '' //清空文件上传框，以避免同名文件onchange事件失效
         let allowType = window.WebIM.config.allowFileType
         /*  if (!fileSize) {
               window.WebIM.api.NotifyError(window.WebIM.lan.fileOverSize);
@@ -54,38 +35,113 @@ class ChatItem extends Component {
               return false;
           }*/
         if (file.filetype.toLowerCase() in allowType) {
-            let option = {
+            let options = {
                 apiUrl: window.WebIM.config.apiURL,
                 file: file,
-                to: this.props.sendTo,                       // 接收消息对象
+                to: sendTo,                       // 接收消息对象
                 roomType: false,
                 chatType: 'singleChat',
-                onFileUploadError: function () {      // 消息上传失败
+                ext: {
+                    fileSize: fileSize,
+                    file_length: fileLength
+                },
+                onFileUploadError: function (e) {      // 消息上传失败
+                    console.log(e)
+                    alert('文件上传失败')
                     console.log('onFileUploadError');
                 },
-                onFileUploadComplete: function () {   // 消息上传成功
+                onFileUploadComplete: function () {   // 消息上传成功                   
                     console.log('onFileUploadComplete');
                 },
-                success: function () {                // 消息发送成功
+                success: function () {
+                    // 消息发送成功
                     console.log('Success');
+                    console.log(msg)
+                    dispatch(appendSent({
+                        id: uid,
+                        type: 'singleChat',
+                        from: window.WebIM.config.openId,
+                        to: sendTo,
+                        url: msg.body.body.url,
+                        fileName: fileName,
+                        fileLength: fileLength,
+                        fileSize: fileSize
+                    }, 'file'))
+
                 },
                 flashUpload: window.WebIM.flashUpload
             };
-            msg.set(option);
+            if (chatType === 1)
+                options.chatType = 'chatRoom'
+            msg.set(options)
+            if (chatType === 0)
+                msg.body.chatType = 'singleChat';
+            if (chatType === 1)
+                msg.setGroup('groupchat');
+
+
             window.WebIM.conn.send(msg.body);
+        } else {
+            alert('不允许上传此类文件，请打包后上传！')
         }
     }
     appendEmoji = () => {
         let emojis = new Array(35)
-      
+
         for (let i = 1; i < 36; i++) {
-            /*emojis[i] = <li><a href='#'><img src={'../../img/emoji/' + (i + 1) + '.gif'} /></a></li>*/
-            // console.log(findEmoji(i))
-            emojis[i] = <li key={i} onClick={()=>this.content.value +=findEmoji(i)}><a href='#'><img src={'../../img/faces/ee_' + i + '.png'} /></a></li>
+            emojis[i] = <li key={i} onClick={() => this.content.value += findEmoji(i)}><a href='#'><img src={window.WebIM.config.baseHref + '/img/faces/ee_' + i + '.png'} /></a></li>
         }
         return emojis
     }
-
+    messageFormat = (msg) => {
+        //根据消息类型及附件发送状态显示不同样式
+        debugger
+        if (msg.msgType === "txt")
+            return convertEmoji(msg.data)
+        if (msg.msgType === 'file') {
+            if (msg.from !== window.WebIM.config.openId) {//接收到的消息
+                let a= `<span class="send-file">
+                        <p><a download=`+msg.fileName+' href='+msg.url+' class="line-block">'+msg.fileName+`</a>
+                            <small>`+msg.fileSize+`</small></p>
+                        <p>
+                            <a download=`+msg.fileName+' href="'+msg.url+`">
+                                    <i class="fa fa-arrow-circle-o-down text-danger"></i>
+                                    <small>点击下载</small>
+                                    </a>                            
+                        </p>
+                    </span>`
+                    console.log(a)
+                return  a 
+            } else {
+                switch (msg.upload) {
+                    case 0:
+                        return (<span className="send-file">
+                            <p><a href="#" className="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                            <p>
+                                <img className="send-load m-r-xs" src="../../img/send-load.gif" /><small>正在发送中...</small>
+                            </p>
+                        </span>)
+                    case 1:
+                        return (<span className="send-file">
+                            <p><a href="#" className="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                            <p>
+                                <i className="fa fa-check-circle text-success m-r-xs"></i><small>发送成功</small>
+                            </p>
+                        </span>)
+                    case 2:
+                        return (<span className="send-file">
+                            <p><a href="#" className="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                            <p>
+                                <i className="fa fa-times-circle text-danger m-r-xs"></i><small>发送失败</small>
+                                <a href="#" className="m-l-md"><i className="fa fa-exclamation-circle text-danger m-r-xs"></i><small>重新发送</small></a>
+                            </p>
+                        </span>)
+                    default:
+                        return ''
+                }
+            }
+        }
+    }
     render() {
         console.log(this.state);
         // let msgs = this.props.chat.msgs       
@@ -112,7 +168,7 @@ class ChatItem extends Component {
                     {thisMsg.type == 0 || isMe ? '' : <div className="msg_bubble_name pull-left m-l-sm">{msg.fromUser}</div>}
                     <div className={isMe ? "bubble_arrow rotate" : "bubble_arrow"}></div>
                     <div className="bubble_cont" dangerouslySetInnerHTML={{
-                        __html: convertEmoji(msg.data)
+                        __html: this.messageFormat(msg)                      
                     }}>
                     </div>
                 </div>)
@@ -123,7 +179,7 @@ class ChatItem extends Component {
             <div style={{
                 display: this.props.hidden ? 'none' : ''
             }}>
-                <div className="webim_chatwindow" onClick={e => { this.setState({ toggle: true }) }}>
+                <div className="webim_chatwindow" onClick={e => { this.selectFace.style.display = "none"; }}>
                     <div className="user_info_header">
                         <h3 id="name">{thisMsg.userName}<small className="icon_chat"><i className="fa fa-comment"></i></small></h3>
                     </div>
@@ -135,34 +191,34 @@ class ChatItem extends Component {
                     </div>
                     <div className="webim-send-wrapper">
                         {/* <!--选择表情包start-->*/}
-                        <div className="face-wrapper" style={{
-                            display: this.state.toggle ? 'none' : 'block'
+                        <div className="face-wrapper" ref={selectFace => this.selectFace = selectFace} style={{
+                            display: 'none'
                         }}>
-                            <h5>经典表情{this.state.toggle}</h5>
+                            <h5>经典表情</h5>
                             {/* <!--表情包start-->*/}
                             <ul className="face-container" >
                                 {this.appendEmoji()}
                             </ul>
                             {/* <!--表情包end-->*/}
-                            <ul className="face-footer">
+                            {/*  <ul className="face-footer">
                                 <li><a href="#" className="active"><img src="../../../img/emoji/face-icon.png" /></a></li>
-                            </ul>
+                            </ul>*/}
                         </div>
                         {/*<!--选择表情包end-->*/}
                         <div className="webim-chatwindow-options">
-                            <a href="#" onClick={e => { this.setState({ toggle: !this.state.toggle }); e.stopPropagation() }}><span className="icon-smiling-face"></span></a>
-                            <a href="#"><span className="icon-picture"></span></a>
+                            <a href="#" onClick={e => { this.selectFace.style.display = "block"; e.stopPropagation() }}><span className="icon-smiling-face"></span></a>
+                            {/*<a href="#"><span className="icon-picture"></span></a>*/}
                             <a href="#" onClick={() => this.file.click()}><span className="icon-adjunct"></span></a>
                             <input ref={file => this.file = file}
-                                onChange={this.fileChange}
+                                onChange={() => this.fileChange(thisMsg.type, this.props.sendTo, this.props.dispatch)}
                                 type='file'
                                 className='hide' />
-                            <a href="#"><span className="icon-audio"></span></a>
+                            {/*<a href="#"><span className="icon-audio"></span></a>*/}
                         </div>
                         <textarea ref={textarea => {
                             this.content = textarea
                         }} ></textarea>
-                        <button className="webim-send-btn" onClick={() => sendMsg(thisMsg.type, 0, this.props.sendTo, this.content.value, this.props.dispatch, () => { this.content.value = '' })}>发送</button>
+                        <button className="webim-send-btn" onClick={(e) => { debugger; sendMsg(thisMsg.type, 0, this.props.sendTo, this.content.value, this.props.dispatch, () => { this.content.value = '' }); e.stopPropagation(); }}>发送</button>
                     </div>
                 </div>
             </div>
