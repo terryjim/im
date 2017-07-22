@@ -21,7 +21,7 @@ WebIM.config = {
      */
     //内网 appkey: 'bluechips#esp',
     appkey: 'bluechips#espformal',
-    
+
     /*Client ID：                    YXA6c8EC8ALYEeeskjnP8K_Mzg
     Client Secret：             YXA6RBG60rcAT9HkZsuhvsD64xEzzGU*/
     /*
@@ -119,20 +119,29 @@ WebIM.config = {
     userCorps: [{ id: 1123, name: '蓝筹科技' }, { id: 1124, name: '中瑞恒德' }],//用户所在企业
     getDeptsUrl: 'http://capi.s-plus.cn/api/v2/org/structure',
     getGroupAvatarUrl: 'http://cs-publish-api.s-plus.cn/CommonData/v2/chatgroup/addinfo',
-    baseHref:'http://localhost:3000',//public文件夹地址，即图像等资源地址
-    allowFileType:{    //上传附件格式，如果为空则所有文件均可上传
+    baseHref: 'http://localhost:3000',//public文件夹地址，即图像等资源地址
+    allowFileType: {    //上传附件格式，如果为空则所有文件均可上传
         'jpg': true,
         'gif': true,
         'png': true,
         'bmp': true,
         'zip': true,
         'txt': true,
-        'doc':true,
+        'doc': true,
         'pdf': true,
-        'ppt':true,
-        'xls':true,
-        'docs':true,
-        'xlsx':true
+        'ppt': true,
+        'xls': true,
+        'docs': true,
+        'xlsx': true,
+        'rar': true,
+        'zip': true,
+        'htm': true,
+        'html': true,
+        'mp3':true,
+        'mp4':true,
+        'mpeg':true,
+        'avi':true,
+        
     }
     /* corpStructure: [
          {1123:[{a:1}]},

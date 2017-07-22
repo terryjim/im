@@ -91,7 +91,7 @@ const store = createStore(reducers, undefined,
         applyMiddleware(thunk),
         autoRehydrate()
     ))
-//persistStore(store)
+persistStore(store)
 
 //获取组织架构
 if (store.getState().corps == null)

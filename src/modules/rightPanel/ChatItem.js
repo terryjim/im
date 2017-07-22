@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { convertDate } from '../../utils'
 import { connect } from 'react-redux'
-import { appendSent } from '../../actions/message'
+import { appendSent, uploaded } from '../../actions/message'
 import { utils } from 'easemob-websdk'
 import { convertEmoji } from '../../utils'
 
@@ -17,6 +17,7 @@ class ChatItem extends Component {
         //chatType 0:个人1：群组  
         //debugger
         //var me = this,       
+        debugger
         let uid = window.WebIM.conn.getUniqueId(),
             msg = new window.WebIM.message('file', uid),
             chatroom = window.WebIM.selectedCate === 'chatrooms',
@@ -46,9 +47,9 @@ class ChatItem extends Component {
                     file_length: fileLength
                 },
                 onFileUploadError: function (e) {      // 消息上传失败
-                    console.log(e)
-                    alert('文件上传失败')
+                    console.log(e)                   
                     console.log('onFileUploadError');
+                    dispatch(uploaded(uid, sendTo, chatType, 0))
                 },
                 onFileUploadComplete: function () {   // 消息上传成功                   
                     console.log('onFileUploadComplete');
@@ -57,17 +58,7 @@ class ChatItem extends Component {
                     // 消息发送成功
                     console.log('Success');
                     console.log(msg)
-                    dispatch(appendSent({
-                        id: uid,
-                        type: 'singleChat',
-                        from: window.WebIM.config.openId,
-                        to: sendTo,
-                        url: msg.body.body.url,
-                        fileName: fileName,
-                        fileLength: fileLength,
-                        fileSize: fileSize
-                    }, 'file'))
-
+                    dispatch(uploaded(uid, sendTo, chatType, 1))
                 },
                 flashUpload: window.WebIM.flashUpload
             };
@@ -81,6 +72,16 @@ class ChatItem extends Component {
 
 
             window.WebIM.conn.send(msg.body);
+            dispatch(appendSent({
+                id: uid,
+                type: 'singleChat',
+                from: window.WebIM.config.openId,
+                to: sendTo,
+                //url: msg.body.body.url,
+                fileName: fileName,
+                fileLength: fileLength,
+                fileSize: fileSize
+            }, 'file'))
         } else {
             alert('不允许上传此类文件，请打包后上传！')
         }
@@ -100,42 +101,47 @@ class ChatItem extends Component {
             return convertEmoji(msg.data)
         if (msg.msgType === 'file') {
             if (msg.from !== window.WebIM.config.openId) {//接收到的消息
-                let a= `<span class="send-file">
-                        <p><a download=`+msg.fileName+' href='+msg.url+' class="line-block">'+msg.fileName+`</a>
-                            <small>`+msg.fileSize+`</small></p>
+                let a = `<span class="send-file">
+                        <p><a download=`+ msg.fileName + ' href=' + msg.url + ' class="line-block">[文件] ' + msg.fileName + `</a>
+                            <small>`+ msg.fileSize + `</small></p>
                         <p>
-                            <a download=`+msg.fileName+' href="'+msg.url+`">
+                            <a download=`+ msg.fileName + ' href="' + msg.url + `">
                                     <i class="fa fa-arrow-circle-o-down text-danger"></i>
                                     <small>点击下载</small>
                                     </a>                            
                         </p>
                     </span>`
-                    console.log(a)
-                return  a 
+                return a
             } else {
+                debugger
                 switch (msg.upload) {
                     case 0:
-                        return (<span className="send-file">
-                            <p><a href="#" className="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                        return (`<span class="send-file">
+                            <p>[文件] `+ msg.fileName + `
+                            <small>`+ msg.fileSize + `</small></p>
                             <p>
-                                <img className="send-load m-r-xs" src="../../img/send-load.gif" /><small>正在发送中...</small>
+                                <img class="send-load m-r-xs" src="../../img/send-load.gif" /><small>正在发送中...</small>
                             </p>
-                        </span>)
+                        </span>`)
                     case 1:
-                        return (<span className="send-file">
-                            <p><a href="#" className="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                        return (`<span class="send-file">
+                            <p>[文件] ` + msg.fileName + `
+                            <small>`+ msg.fileSize + `</small></p>
                             <p>
-                                <i className="fa fa-check-circle text-success m-r-xs"></i><small>发送成功</small>
+                            <p>
+                                <i class="fa fa-check-circle text-success m-r-xs"></i><small>发送成功</small>
                             </p>
-                        </span>)
+                        </span>`)
                     case 2:
-                        return (<span className="send-file">
-                            <p><a href="#" className="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                        return (`<span class="send-file">
+                            <p><div class="line-block">[文件] `+ msg.fileName + `</div>
+                            <small>`+ msg.fileSize + `</small></p>
                             <p>
-                                <i className="fa fa-times-circle text-danger m-r-xs"></i><small>发送失败</small>
-                                <a href="#" className="m-l-md"><i className="fa fa-exclamation-circle text-danger m-r-xs"></i><small>重新发送</small></a>
+                            <p>
+                                <i class="fa fa-times-circle text-danger m-r-xs"></i><small>发送失败</small>
+                                <a href="#" class="m-l-md"><i className="fa fa-exclamation-circle text-danger m-r-xs"></i><small>重新发送</small></a>
                             </p>
-                        </span>)
+                        </span>`)
                     default:
                         return ''
                 }
@@ -143,6 +149,7 @@ class ChatItem extends Component {
         }
     }
     render() {
+        console.log('重新渲染－－－－－－－－－－－－－－－－－－－－－－－－－－')
         console.log(this.state);
         // let msgs = this.props.chat.msgs       
         let msgsAll = this.props.msgsAll
@@ -168,9 +175,8 @@ class ChatItem extends Component {
                     {thisMsg.type == 0 || isMe ? '' : <div className="msg_bubble_name pull-left m-l-sm">{msg.fromUser}</div>}
                     <div className={isMe ? "bubble_arrow rotate" : "bubble_arrow"}></div>
                     <div className="bubble_cont" dangerouslySetInnerHTML={{
-                        __html: this.messageFormat(msg)                      
-                    }}>
-                    </div>
+                        __html: this.messageFormat(msg)
+                    }}></div>                   
                 </div>)
             })
         }
@@ -276,6 +282,9 @@ const findEmoji = (index) => {
 
 
 const mapStateToProps = (state) => {
+    console.log('-------------------------------------------------------------------------------------------------')
+    console.log(state.messages)
+    console.log('state.messages')
     let msgsAll = convertMessages(state.messages, state.userInfo, state.groups)
     return { msgsAll }
 }

@@ -47,6 +47,7 @@ class Corps extends Component {
                         </TreeView>
                     );
                 })}
+                 <div className="renovate" title="点击刷新" onClick={()=>this.props.fetchCorps(window.WebIM.config.userCorps)}><i className="fa fa-refresh"></i></div>
             </ul>
         );
     }

@@ -25,6 +25,7 @@ class Groups extends Component {
                         )}
                     </dd>
                 </dl>
+                 <div className="renovate" title="点击刷新" onClick={this.props.fetchGroups}><i className="fa fa-refresh"></i></div>
             </ul>
         )
     }

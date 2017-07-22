@@ -27,7 +27,7 @@ class Friends extends Component {
                         )}
                     </dd>
                 </dl>
-                <div className="renovate" title="点击刷新"><i className="fa fa-refresh"></i></div>
+                <div className="renovate" title="点击刷新" onClick={this.props.fetchFriends}><i className="fa fa-refresh"></i></div>
             </ul>
         )
     }

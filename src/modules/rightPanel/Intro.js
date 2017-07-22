@@ -24,10 +24,10 @@ let Intro = ({ dispatch, intro = {}, hidden }) => {
                             this.companyName = x
                         }}>{intro.cards[0].companyName}</span>
             </div>
-            <div className="col-sm-12">
+            {/*<div className="col-sm-12">
                 <span className="text_gray width_40 text-right pull-left">部&nbsp;&nbsp;&nbsp;&nbsp;门</span>
                 <span className="width_57 pull-right">{intro.openId}</span>
-            </div>
+            </div>*/}
             <div className="col-sm-12">
                 <span className="text_gray width_40 text-right pull-left">岗&nbsp;&nbsp;&nbsp;&nbsp;位</span>
                 <span className="width_57 pull-right" ref={x => {

@@ -43,6 +43,7 @@ sample_state:
 //异步获取所有消息列表
 const messages = (state = [], action) => {
     //state中消息列表所有的openID
+    debugger
     let msgOpenIds = new Array()
     let message = null
     if (state != null)
@@ -177,6 +178,7 @@ const messages = (state = [], action) => {
                 msg.data = '文件'
                 msg.fileLength = message.fileLength
                 msg.fileSize = message.fileSize
+                msg.upload = 0 //正在上传状态
             }
             if (message.type.indexOf('group') === 0) {//群组消息
                 state.map(x => {
@@ -211,6 +213,28 @@ const messages = (state = [], action) => {
             }
             )
             return state.slice()   //拷贝state以生成新state
+
+        case 'UPLOADED':
+
+
+            let newState = state.map((x, index) => {
+                if (x.openId === action.sendTo && x.type === action.isGroup) {
+                    let msgs = x.msgs.map(
+                        ele => {
+                            if (ele.id === action.uid) {
+                                return { ...ele, upload: action.success === 1 ? 1 : 2 }
+                            }
+                            else
+                                return ele
+                        }
+                    )
+                    return {...x,msgs}
+                }
+                else return x
+            })
+            return newState
+
+
         default:
             return state;
     }

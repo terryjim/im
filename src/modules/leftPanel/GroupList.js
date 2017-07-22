@@ -9,7 +9,8 @@ const mapStateToProps = (state) => {
     return { groups: state.groups, hidden, selectedItem: state.showGroupMember }
 }
 const mapDispatchToProps = {
-    onGroupClick: showGroupMember
+    onGroupClick: showGroupMember,
+   fetchGroups: fetchGroups
 }
 
 const GroupList = connect(
