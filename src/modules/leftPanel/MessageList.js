@@ -35,7 +35,7 @@ const convertMessages = (messages, userInfos, groups) => {
       if (group != null && group.length > 0) {
         let msgs = x.msgs
         if (msgs != null && msgs.length > 0) {
-          debugger
+          //debugger
           msgs=msgs.map(z => {
             //查找群组内发信人信息
             let sendMan = (userInfos.filter(user => user.openId == z.from))[0]

@@ -29,8 +29,7 @@ conn.listen({
         // 手动上线指的是调用conn.setPresence(); 如果conn初始化时已将isAutoLogin设置为true
         // 则无需调用conn.setPresence();   
         //获取群组 
-        if (store.getState().groups == null) {
-            console.log('groups11111111111111111111111111111111111111111111111111')
+        if (store.getState().groups == null) {            
             store.dispatch(fetchGroups());
         }
         //getGroups();
@@ -96,15 +95,11 @@ const store = createStore(reducers, undefined,
     ))
 persistStore(store, {}, () => {
     //获取组织架构
-    if (store.getState().corps == null) {
-        console.log(store.getState())
-        console.log('corps11111111111111111111111111111111111111111111111111')
-
+    if (store.getState().corps == null) {      
         store.dispatch(fetchCorps(WebIM.config.userCorps));
     }
     //获取好友列表
-    if (store.getState().friends == null) {
-        console.log('friends11111111111111111111111111111111111111111111111111')
+    if (store.getState().friends == null) {       
         store.dispatch(fetchFriends());
     }
 })
