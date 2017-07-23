@@ -1,11 +1,13 @@
+import {loading} from './'
 let WebIM = window.WebIM
 //获取组织架构
 //参数corps=[{id: 1123, name: '蓝筹科技' }, { id: 1124, name: '中瑞恒德' }]
 export const fetchCorps = (corps) => dispatch => {
+  dispatch(loading(3))
   //不能用headers=new Headers()，否则跨域出错
   let headers = {};
   headers.Authorization = WebIM.config.tokenLocal
-  let args = { method: 'GET', mode: 'cors', headers: headers }
+  let args = { method: 'GET', mode: 'cors', headers: headers ,cache:'reload'}
   let corpsIds = (corps.map(x => x.id)).join(',')
   let result = []
   //mode: "cors",

@@ -1,3 +1,4 @@
+import {loading} from './'
 let WebIM = window.WebIM
 
 //根据异步查询数据获取好友列表信息
@@ -12,10 +13,11 @@ export const getFriends = (json) => {
 }
 
 export const fetchFriends = () => dispatch => {
+  dispatch(loading(1))
   //不能用headers=new Headers()，否则跨域出错
   let headers = {};
   headers.Authorization = WebIM.config.tokenLocal
-  let args = { method: 'GET', mode: 'cors', headers: headers } 
+  let args = { method: 'GET', mode: 'cors', headers: headers,cache:'reload'} 
   console.log('查找好友')
   return fetch(WebIM.config.getFriendsUrl, args).then(response => response.json())
     .then(json => {

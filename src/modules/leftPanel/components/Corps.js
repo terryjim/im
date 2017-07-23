@@ -18,8 +18,14 @@ class Corps extends Component {
         }
     }*/
     render() {
-        const { hidden, corps, onUserClick } = this.props
+        const { hidden, corps, onUserClick,loading } = this.props        
         console.log(corps)
+         if (loading)
+            return (<div className="loading">
+                <img src="../../../img/loading.gif" />
+                <p>正在更新数据，请稍后...</p>
+            </div>)
+        else
         return (
             <ul className="webim_leftbar_message im_tab_nav_no expmenu tree_li" style={{
                 display: hidden ? 'none' : 'block'

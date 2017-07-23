@@ -6,8 +6,9 @@ import Groups from './components/Groups'
 const mapStateToProps = (state) => {
     let hidden = state.topNav !== 3 ? true : false
     //let members=state.groups.members
-    return { groups: state.groups, hidden, selectedItem: state.showGroupMember }
+    return { groups: state.groups, hidden, selectedItem: state.showGroupMember,loading:state.loading===2 }
 }
+
 const mapDispatchToProps = {
     onGroupClick: showGroupMember,
    fetchGroups: fetchGroups

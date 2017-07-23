@@ -22,15 +22,17 @@ let conn = new SDK.connection({
     isMultiLoginSessions: WebIM.config.isMultiLoginSessions
 });
 WebIM.conn = conn
+debugger
 conn.listen({
     onOpened: function (message) {          //连接成功回调
         // 如果isAutoLogin设置为false，那么必须手动设置上线，否则无法收消息
         // 手动上线指的是调用conn.setPresence(); 如果conn初始化时已将isAutoLogin设置为true
         // 则无需调用conn.setPresence();   
         //获取群组 
-        if (store.getState().groups == null)
+        if (store.getState().groups == null) {
+            console.log('groups11111111111111111111111111111111111111111111111111')
             store.dispatch(fetchGroups());
-
+        }
         //getGroups();
         //获取好友
         //获取消息列表
@@ -42,13 +44,14 @@ conn.listen({
         console.log(message)
         store.dispatch(receiveMessage(message))
     },    //收到文本消息
-    onEmojiMessage: function (message) {  console.log(message)
-       },   //收到表情消息
+    onEmojiMessage: function (message) {
+        console.log(message)
+    },   //收到表情消息
     onPictureMessage: function (message) { console.log(message) }, //收到图片消息
     onCmdMessage: function (message) { console.log(message) },     //收到命令消息
     onAudioMessage: function (message) { console.log(message) },   //收到音频消息
     onLocationMessage: function (message) { console.log(message) },//收到位置消息
-    onFileMessage: function (message) { console.log(message);store.dispatch(receiveMessage(message,'file')) },    //收到文件消息
+    onFileMessage: function (message) { console.log(message); store.dispatch(receiveMessage(message, 'file')) },    //收到文件消息
     onVideoMessage: function (message) {
         var node = document.getElementById('privateVideo');
         var option = {
@@ -91,14 +94,22 @@ const store = createStore(reducers, undefined,
         applyMiddleware(thunk),
         autoRehydrate()
     ))
-persistStore(store)
+persistStore(store, {}, () => {
+    //获取组织架构
+    if (store.getState().corps == null) {
+        console.log(store.getState())
+        console.log('corps11111111111111111111111111111111111111111111111111')
 
-//获取组织架构
-if (store.getState().corps == null)
-    store.dispatch(fetchCorps(WebIM.config.userCorps));
-//获取好友列表
-if (store.getState().friends == null)
-    store.dispatch(fetchFriends());
+        store.dispatch(fetchCorps(WebIM.config.userCorps));
+    }
+    //获取好友列表
+    if (store.getState().friends == null) {
+        console.log('friends11111111111111111111111111111111111111111111111111')
+        store.dispatch(fetchFriends());
+    }
+})
+
+
 
 ReactDOM.render(
     <Provider store={store}>

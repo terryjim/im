@@ -9,7 +9,13 @@ class Friends extends Component {
         fetchFriends();//从FriendList中传过来的action，不是redux中的dispatch
     }*/
     render() {
-        const { friends, onFriendClick, hidden, selectedItem } = this.props
+        const { friends, onFriendClick, hidden, selectedItem,loading } = this.props
+         if (loading)
+            return (<div className="loading">
+                <img src="../../../img/loading.gif" />
+                <p>正在更新数据，请稍后...</p>
+            </div>)
+        else
         return (
             <ul className="webim_leftbar_message im_tab_nav_no" style={{
                 display: hidden ? 'none' : 'block'

@@ -33,3 +33,7 @@ export const uploaded = (uid, sendTo, isGroup, success) => {
     })
 }
 
+//清空所有缓存消息
+export const clearMessages=()=>{
+    return ({type:'CLEAR_MESSAGES'})
+}

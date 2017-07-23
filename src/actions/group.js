@@ -1,3 +1,4 @@
+import {loading} from './'
 let WebIM = window.WebIM
 //返回左侧导航栏当前选中的群组
 export const showGroupMember = (openId) => ({
@@ -17,6 +18,7 @@ export const getGroups = (json) => {
 }
 //通过环信接口获取用户所在群组列表
 export const fetchGroups = () => dispatch => {
+  dispatch(loading(2))
   let options = {
     success: function (resp) {
       console.log('获取群组成功')
@@ -106,7 +108,7 @@ export const fetchGroupMember = (groupId) => dispatch => {
 export const fetchGroupMember2 = (groupId,groupMember) => dispatch => {
   //不能用headers=new Headers()，否则跨域出错
   let openIds = (groupMember.map(x => x.openId)).join(',')
-  let args = { method: 'POST', mode: 'cors', body: convertObjectToFormData({ 'access_token': WebIM.config.token, openids: openIds }) }
+  let args = { method: 'POST', mode: 'cors', body: convertObjectToFormData({ 'access_token': WebIM.config.token, openids: openIds }) ,cache:'reload'}
   return fetch(WebIM.config.getUsersInfoUrl, args).then(response => response.json())
     .then(json => {
       if (json.status === 2000) {

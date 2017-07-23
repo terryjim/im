@@ -6,7 +6,7 @@ import {fetchCorps} from '../../actions/corp'
 
 const mapStateToProps = (state) => {
     let hidden = state.topNav !== 4 ? true : false
-    return { corps: state.corps,hidden}
+    return { corps: state.corps,hidden,loading:state.loading===3 }
 }
 const mapDispatchToProps = {
     onUserClick: showIntro,

@@ -166,8 +166,8 @@ class ChatItem extends Component {
             msgs.forEach((msg, index, array) => {
                 if ((msg.received).substring(0, 19) != lastReceived.substring(0, 19)) {  //若相临消息有相同的时间则只显示一次时间信息(不判断毫秒)
                     lastReceived = msg.received
-                    content.push(<div className="col-sm-12 text-center font_size12 text_gray m-b">{convertDate(lastReceived)}</div>)
-                }
+                    content.push(<div className="col-sm-12 text-center font_size12 text_gray m-b" key={convertDate(lastReceived)}>{convertDate(lastReceived)}</div>)
+                } 
                 isMe = msg.from == window.WebIM.config.openId
                 console.log(msgs)
                 content.push(<div className={isMe ? "col-sm-12 m-b  text-right" : "col-sm-12 m-b"}>

@@ -49,6 +49,8 @@ const messages = (state = [], action) => {
     if (state != null)
         state.forEach(x => msgOpenIds.push(x.openId))
     switch (action.type) {
+        case 'CLEAR_MESSAGES':  //清空所有消息
+            return []
         case 'SHOW_MESSAGE':
             //显示所选用户消息、打开对话界面，若不存在该用户消息则创建一条记录，取消未读状态
             //action: (type:'SHOW_MESSAGE'，{openId,userName,isGroup=false})     
@@ -228,7 +230,7 @@ const messages = (state = [], action) => {
                                 return ele
                         }
                     )
-                    return {...x,msgs}
+                    return { ...x, msgs }
                 }
                 else return x
             })
