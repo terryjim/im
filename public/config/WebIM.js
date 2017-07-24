@@ -186,4 +186,5 @@ WebIM.emoji = {
     '[(W)]': 'ee_34.png',
     '[(D)]': 'ee_35.png'
 }
-
+//新消息数，用于全局变量
+WebIM.newMsgs=0

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>web-im</title>
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"><!--bootstrap-->
+<link href="css/font-awesome.min.css" rel="stylesheet"><!--字体图标-->
+<link href="css/icomoon.css" rel="stylesheet"><!--自定义新添加的图标-->
+<link href="css/web-im.css" rel="stylesheet" type="text/css"><!--自定义样式-->
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<!--导航切换start-->
+<script type="text/javascript">
+$(document).ready(function() {
+	jQuery.jqtab = function(tabtit,tab_conbox,shijian) {
+		$(webim_leftbar).find("ul").hide();
+		$(tabtit).find("li:first").addClass("thistab").show(); 
+		$(webim_leftbar).find("ul:first").show();
+	
+		$(tabtit).find("li").bind(shijian,function(){
+		  $(this).addClass("thistab").siblings("li").removeClass("thistab"); 
+			var activeindex = $(tabtit).find("li").index(this);
+			$(webim_leftbar).children().eq(activeindex).show().siblings().hide();
+			return false;
+		});
+	
+	};
+	/*调用方法如下：*/
+	$.jqtab("#im_tab_nav","#webim_leftbar","click");
+	
+/*	$.jqtab("#tabs2","#tab_conbox2","mouseenter");
+*/	
+});
+</script>
+<!--导航切换end-->
+
+</head>
+
+<body>
+	<div class="loading" style="display:none;">
+        <img src="img/loading.gif">
+        <p>正在加载中，请稍后...</p>
+	</div>
+    
+	<div class="webim_chat">
+    <!--头部指南start-->
+	<div class="im_header">
+    	<input name="" type="text" class="im_header_seach" placeholder="搜索">
+    	<ul class="im_tab_nav" id="im_tab_nav">
+    		<li title="消息列表"><i class="fa fa-comments"></i><span class="message_tips">8</span></li>
+    		<li title="好友列表"><i class="fa fa-user"></i></li>
+    		<li title="群组列表"><i class="fa fa-users"></i></li>
+    		<li title="组织架构"><i class="fa fa-share-alt"></i></li>
+    	</ul>
+        <a href="#" class="ms-delete pull-right"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+    </div>
+    <!--头部指南end-->
+    
+    <!--左边列表start-->
+    <div class="webim_leftbar" id="webim_leftbar">
+    	<!--消息列表start-->
+    	<ul class="webim_leftbar_message im_tab_nav_no">
+        	<li>
+            	<div class="webim_portrait"><img src="img/img01.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">周凡</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">灵活开放，社交网络<img src="img/emoji/1.gif"></span>
+                        <span class="webim_contact_time"><span class="list_message_tips">8</span></span>
+                    </p>
+                </div>
+            </li>
+        	<li>
+            	<div class="webim_portrait"><img src="img/img02.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">Sass平台项目组</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">占智峰：灵活开放</span>
+                        <span class="webim_contact_time"><span class="list_message_tips">99+</span></span>
+                    </p>
+                </div>
+            </li>
+        	<li class="active">
+            	<div class="webim_portrait"><img src="img/img03.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">张振中</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">灵活开放，社交网络平台社交网络平台社交网络平台社交网络平台</span>
+                    </p>
+                </div>
+            </li>
+        	<li>
+            	<div class="webim_portrait"><img src="img/img04.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">王振涛</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">灵活开放，社交网络</span>
+                    </p>
+                </div>
+            </li>
+        	<li>
+            	<div class="webim_portrait"><img src="img/img05.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">吕晓俊</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">灵活开放，社交网络</span>
+                    </p>
+                </div>
+            </li>
+        	<li>
+            	<div class="webim_portrait"><img src="img/img06.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">董计弘</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">灵活开放，社交网络平台社交网络平台社交网络平台社交网络平台</span>
+                    </p>
+                </div>
+            </li>
+        	<li>
+            	<div class="webim_portrait"><img src="img/img07.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">罗俊</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">灵活开放，社交网络</span>
+                    </p>
+                </div>
+            </li>
+        	<li>
+            	<div class="webim_portrait"><img src="img/img08.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">占智峰</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">灵活开放，社交网络平台社交网络平台社交网络平台社交网络平台</span>
+                    </p>
+                </div>
+            </li>
+        	<li>
+            	<div class="webim_portrait"><img src="img/img09.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">张园民</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">灵活开放，社交网络平台社交网络平台社交网络平台社交网络平台</span>
+                    </p>
+                </div>
+            </li>
+        	<li>
+            	<div class="webim_portrait"><img src="img/img05.jpg"></div>
+                <div class="webim_contact_info">
+                	<p class="webim_contact_username">
+                        <span class="title">赵秀秀</span>
+                        <span class="webim_contact_time">13:22</span>
+                    </p>
+                    <p>
+                    	<span class="webim_contact_p">灵活开放，社交网络</span>
+                    </p>
+                </div>
+            </li>
+            <div class="renovate" title="点击刷新"><i class="fa fa-refresh"></i></div>
+        </ul>
+        <!--消息列表end-->
+        
+        <!--好友列表start-->
+        <ul class="webim_leftbar_message im_tab_nav_no">
+        	<dl>
+                <dt>d</dt>
+                <dd>
+                    <li class="active">
+                        <div class="webim_portrait"><img src="img/img01.jpg"></div>
+                        <div class="webim_contact_info friend_name">占智峰</div>
+                    </li>
+                    <li>
+                        <div class="webim_portrait"><img src="img/img02.jpg"></div>
+                        <div class="webim_contact_info friend_name">董计弘</div>
+                    </li>
+                </dd>
+            </dl>
+        	<dl>
+                <dt>l</dt>
+                <dd>
+                    <li>
+                        <div class="webim_portrait"><img src="img/img03.jpg"></div>
+                        <div class="webim_contact_info friend_name">刘勇</div>
+                    </li>
+                    <li>
+                        <div class="webim_portrait"><img src="img/img04.jpg"></div>
+                        <div class="webim_contact_info friend_name">吕晓俊</div>
+                    </li>
+                    <li>
+                        <div class="webim_portrait"><img src="img/img05.jpg"></div>
+                        <div class="webim_contact_info friend_name">罗俊</div>
+                    </li>
+                </dd>
+            </dl>
+        	<dl>
+                <dt>w</dt>
+                <dd>
+                    <li>
+                        <div class="webim_portrait"><img src="img/img06.jpg"></div>
+                        <div class="webim_contact_info friend_name">王振涛</div>
+                    </li>
+                    <li>
+                        <div class="webim_portrait"><img src="img/img07.jpg"></div>
+                        <div class="webim_contact_info friend_name">王传龙</div>
+                    </li>
+                </dd>
+            </dl>
+        	<dl>
+                <dt>w</dt>
+                <dd>
+                    <li>
+                        <div class="webim_portrait"><img src="img/img06.jpg"></div>
+                        <div class="webim_contact_info friend_name">王振涛</div>
+                    </li>
+                    <li>
+                        <div class="webim_portrait"><img src="img/img07.jpg"></div>
+                        <div class="webim_contact_info friend_name">王传龙</div>
+                    </li>
+                </dd>
+            </dl>
+            <div class="renovate" title="点击刷新"><i class="fa fa-refresh"></i></div>
+        </ul>
+        <!--好友列表end-->
+        
+        <!--群组列表start-->
+        <ul class="webim_leftbar_message im_tab_nav_no group_link">
+        	<li>
+				<div class="webim_portrait"><img src="img/img07.jpg"></div>
+				<div class="webim_contact_info friend_name">Sass平台项目组</div>
+            </li>
+            <div class="renovate" title="点击刷新"><i class="fa fa-refresh"></i></div>
+        </ul>
+        <!--群组列表end-->
+        
+        <!--组织架构start-->
+        <ul class="webim_leftbar_message im_tab_nav_no expmenu tree_li">
+        	<li>
+                <div class="header active">蓝筹科技</div>
+                <ul class="menu">
+					<li>
+						<div class="header active">商业运营部</div>
+                    </li>
+                    <ol>
+                        <li>
+                            <div class="webim_portrait"><img src="img/img01.jpg"></div>
+                            <div class="webim_contact_info">
+                                <p class="webim_contact_username">
+                                    <span class="title">吕晓俊</span>
+                                </p>
+                                <p>
+                                    <span class="webim_contact_p">运营总监</span>
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="webim_portrait"><img src="img/img02.jpg"></div>
+                            <div class="webim_contact_info">
+                                <p class="webim_contact_username">
+                                    <span class="title">贺曦</span>
+                                </p>
+                                <p>
+                                    <span class="webim_contact_p">运营主管</span>
+                                </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="webim_portrait"><img src="img/img04.jpg"></div>
+                            <div class="webim_contact_info">
+                                <p class="webim_contact_username">
+                                    <span class="title">李爱爱</span>
+                                </p>
+                                <p>
+                                    <span class="webim_contact_p">UI设计师</span>
+                                </p>
+                            </div>
+                        </li>
+                    </ol>
+                    <li>
+						<div class="header">研发部</div>
+                    </li>
+                    <li>
+						<div class="header">市场部</div>
+                    </li>
+                    <li>
+						<div class="header">财务部</div>
+                    </li>
+                    <li>
+						<div class="header">人事部</div>
+                    </li>
+                    <li>
+						<div class="header">总经办</div>
+                    </li>
+                </ul>
+        	</li>
+            <li>
+                <div class="header">中瑞恒德</div>
+            </li>
+            <div class="renovate" title="点击刷新"><i class="fa fa-refresh"></i></div>
+        </ul>
+        <!--组织架构end-->
+    </div>
+    <!--左边列表end-->
+    
+    <!--右边内容区域块start-->
+    <div class="webim_rightbar">
+    	<div class="webim_chatwindow_bg" style="display:none;">
+			<!--用户名片start-->
+        	<div class="row webim_user_card m-t-xl" style="display:none;">
+                <div class="col-sm-12 clearfix text-center">
+                    <span class="width_57 pull-right">
+                    	<div class="webim_toux font_size18 m-b">
+                            <div class="webim_info_img"><img src="img/img01.jpg"></div>
+                            占智峰&nbsp;<img src="img/man_user.png">
+                        </div>
+                    </span>
+                </div>
+            	<div class="col-sm-12">
+                    <span class="text_gray width_40 text-right pull-left">公&nbsp;&nbsp;&nbsp;&nbsp;司</span>
+                    <span class="width_57 pull-right">蓝筹科技</span>
+                </div>
+            	<div class="col-sm-12">
+                    <span class="text_gray width_40 text-right pull-left">部&nbsp;&nbsp;&nbsp;&nbsp;门</span>
+                    <span class="width_57 pull-right">研发部</span>
+                </div>
+            	<div class="col-sm-12">
+                	<span class="text_gray width_40 text-right pull-left">岗&nbsp;&nbsp;&nbsp;&nbsp;位</span>
+                    <span class="width_57 pull-right">JAVA工程师</span>
+                </div>
+            	<div class="col-sm-12">
+                	<span class="text_gray width_40 text-right pull-left">手机号</span>
+                    <span class="width_57 pull-right">13652021562</span>
+                </div>
+            	<div class="col-sm-12 clearfix">
+                	<span class="text_gray width_40 text-right pull-left">邮&nbsp;&nbsp;&nbsp;&nbsp;箱</span>
+                    <span class="width_57 pull-right">zhifeng.zhan@bluechips.net.cn</span>
+                </div>
+                <div class="col-sm-12">
+                	<span class="text_gray width_40 text-right pull-left">&nbsp;</span>
+                    <span class="width_57 pull-right btn-toggle m-t">
+                    <a class="disabled" href="#"><i class="fa fa-angle-left"></i></a>
+                    <a href="#"><i class="fa fa-angle-right"></i></a>
+                    </span>
+                </div>
+                <div class="col-sm-12">
+                    <span class="width_57 pull-right"><button class="btn_message m-t-lg" type="button" name="message">发消息</button></span>
+                </div>
+            </div>
+        	<!--用户名片end-->
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $(".webim_leftbar_message li").click(function(){
+                    $(".webim_chatwindow_bg").show();
+                    $(".webim_chatwindow").show();
+					$(".webim_user_card").hide();
+					$(".group_user").hide();
+                });
+            });
+			$(document).ready(function(){
+                $(".webim_leftbar_message dl li").click(function(){
+                    $(".webim_chatwindow").hide();
+					$(".group_user").hide();
+					$(".webim_user_card").show();
+                });
+            });
+			$(document).ready(function(){
+                $(".group_link li").click(function(){
+                    $(".webim_chatwindow").hide();
+					$(".webim_user_card").hide();
+					$(".group_user").show();
+                });
+            });
+			$(document).ready(function(){
+			  $("button.btn_message").click(function(){
+				$(".webim_user_card").hide();
+				$(".group_user").hide();
+				$(".webim_chatwindow").show();
+			  });
+			});
+        </script>
+        
+        <!--群组成员start-->
+        <div class="group_user" style="display:none;">
+            <div class="user_info_header">
+                <h3>Sass平台项目组 (3)<small><a href="#"><i class="fa fa-user-plus"></i>邀请成员</a></small></h3>
+            </div>
+            <div class="user_info_content">
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img01.jpg"></dt>
+                    <dd>金总</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img02.jpg"></dt>
+                    <dd>占智峰</dd>
+                </dl>
+                <dl>
+                    <dt><img src="img/img03.jpg"></dt>
+                    <dd>董艳红</dd>
+                </dl>
+            </div>
+        	<div class="text-center"><button class="btn_message m-t-lg" type="button" name="message">发消息</button></div>
+        </div>
+        <!--群组成员end-->
+
+        <!--聊天窗口start-->
+        <div class="webim_chatwindow" style="display:none;">
+			<div class="user_info_header">
+				<h3>张振中<small class="icon_chat"><i class="fa fa-comment"></i></small></h3>
+			</div>
+			<div class="webim_chatwindow_msg" id="divmsg">
+				<div class="row">
+                	<div class="col-sm-12 text-center font_size12 text_gray m-b">06-15 13:24</div>
+                    <div class="col-sm-12 m-b">
+                    	<div class="webim_portrait m-r-sm"><img src="img/img01.jpg"></div>
+                        <div class="msg_bubble_name pull-left m-l-sm">张振中</div>
+                        <div class="bubble_arrow"></div>
+                        <div class="bubble_cont">
+                            <span class="send-file">
+                            	<p><a href="#" class="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                                <p>
+                                    <img class="send-load m-r-xs" src="img/send-load.gif" ><small>正在发送中...</small>
+                                </p>
+                            </span>
+                        </div>
+                    </div>
+                	<div class="col-sm-12 text-center font_size12 text_gray m-b">
+                    	<span class="send-tips">
+                            <i class="fa fa-check-circle text-success m-r-xs"></i>对方已成功接收了您发送的文件“adaptive-module.js”(836.00B)。
+
+                        </span>
+                    </div>
+                    <div class="col-sm-12 m-b">
+                    	<div class="webim_portrait m-r-sm"><img src="img/img01.jpg"></div>
+                        <div class="msg_bubble_name pull-left m-l-sm">张振中</div>
+                        <div class="bubble_arrow"></div>
+                        <div class="bubble_cont">
+                            <span class="send-file">
+                            	<p><a href="#" class="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                                <p>
+                                    <i class="fa fa-check-circle text-success m-r-xs"></i><small>发送成功</small>
+                                </p>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 m-b">
+                    	<div class="webim_portrait m-r-sm"><img src="img/img01.jpg"></div>
+                        <div class="msg_bubble_name pull-left m-l-sm">张振中</div>
+                        <div class="bubble_arrow"></div>
+                        <div class="bubble_cont">
+                            <span class="send-file">
+                            	<p><a href="#" class="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                                <p>
+                                    <i class="fa fa-times-circle text-danger m-r-xs"></i><small>发送失败</small>
+                                    <a href="#" class="m-l-md"><i class="fa fa-exclamation-circle text-danger m-r-xs"></i><small>重新发送</small></a>
+                                </p>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 m-b text-right">
+                    	<div class="webim_portrait pull-right m-l-sm"><img src="img/img05.jpg"></div>
+                        <div class="msg_bubble_name pull-right m-r-sm">占智峰</div>
+                        <div class="bubble_arrow rotate"></div>
+                        <div class="bubble_cont">
+                            <span class="send-file">
+                            	<p><a href="#" class="line-block">新建文本文档.txt</a><small>3.5k</small></p>
+                                <p>
+                                    <a href="#">
+                                    <i class="fa fa-arrow-circle-o-down text-danger"></i>
+                                    <small>点击下载</small>
+                                    </a>
+                                </p>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 m-b">
+                    	<div class="webim_portrait m-r-sm"><img src="img/img01.jpg"></div>
+                        <div class="msg_bubble_name pull-left m-l-sm">张振中</div>
+                        <div class="bubble_arrow"></div>
+                        <div class="bubble_cont">
+                            它的展示形式是以网页为媒介的。
+                        </div>
+                    </div>
+                	<div class="col-sm-12 text-center font_size12 text_gray m-b">06-15 13:24</div>
+                    <div class="col-sm-12 m-b text-right">
+                    	<div class="webim_portrait pull-right m-l-sm"><img src="img/img05.jpg"></div>
+                        <div class="msg_bubble_name pull-right m-r-sm">占智峰</div>
+                        <div class="bubble_arrow rotate"></div>
+                        <div class="bubble_cont">
+                            它的展示形式是以网页为媒介的。
+                        </div>
+                    </div>
+                    <div class="col-sm-12 m-b">
+                    	<div class="webim_portrait m-r-sm"><img src="img/img01.jpg"></div>
+                        <div class="msg_bubble_name pull-left m-l-sm">张振中</div>
+                        <div class="bubble_arrow"></div>
+                        <div class="bubble_cont">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <div class="col-sm-12 m-b text-right">
+                    	<div class="webim_portrait pull-right m-l-sm"><img src="img/img05.jpg"></div>
+                        <div class="msg_bubble_name pull-right m-r-sm">占智峰</div>
+                        <div class="bubble_arrow rotate"></div>
+                        <div class="bubble_cont">
+                            &nbsp;
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<div class="webim-send-wrapper">
+                <!--选择表情包start-->
+                <div class="face-wrapper">
+                	<h5>经典表情</h5>
+                    <!--表情包start-->
+                	<ul class="face-container" id="face-box">
+						<script>
+                            for(var i=1;i<76;i++){
+                                $("#face-box").append('<li><a href="#"><img src="img/emoji/'+i+'.gif"></a></li>')
+                            };
+                        </script>
+                    </ul>
+                    <!--表情包end-->
+                    <ul class="face-footer">
+                    	<li><a href="#" class="active"><img src="img/emoji/face-icon.png"></a></li>
+                    </ul>
+                </div>
+                <!--选择表情包end-->
+				<div class="webim-chatwindow-options">
+                    <a href="#"><span class="icon-smiling-face" title="选择表情"></span></a>
+                    <a href="#"><span class="icon-picture" title="选择图片"></span></i></a>
+                    <a href="#"><span class="icon-adjunct" title="选择附件"></span></a>
+                    <a href="#"><span class="icon-audio" title="选择音频"></span></a>
+				</div>
+                <!--点击选择表情 显示表情包start-->
+                <script>
+                	$(function(){
+						$("a span.icon-smiling-face").click(function(){
+							$(".face-wrapper").toggle();
+						});	
+						$(".face-container a").click(function(){
+							$(".face-wrapper").hide();
+						});	
+					});
+                </script>
+                <!--点击选择表情 显示表情包end-->
+                
+				<textarea class="input" id="textarea" name="textarea"></textarea>
+                <button class="webim-send-btn" id="webim-send-btn">发送</button>
+				<script type="text/javascript">
+                    var test = document.getElementById("webim-send-btn");
+                    var div = document.getElementById("divmsg");
+                    test.onclick = function () {
+                        div.innerHTML = div.innerHTML+"js实现将div等滚动条(scrollbar)保持在最底部的方法<br/><br/>";
+                        div.scrollTop = div.scrollHeight;
+                    };//测试发送的消息保持最底部
+                </script>
+			</div>
+		</div>
+        <!--聊天窗口end-->
+   
+    </div>
+    </div>
+	<!--右边内容区域块end-->
+	  
+    </div>    
+</body>
+</html>

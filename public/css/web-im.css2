@@ -5,11 +5,6 @@ body {
 	font-family:Microsoft YaHei;
 	color:#333;
 }
-body,html{
-	height:100%;
-	max-height:100%;
-	overflow-y:hidden;
-}
 /*通用样式*/
 * {
 	margin: 0;
@@ -32,10 +27,6 @@ a {
 a:focus {
 	text-decoration:none;
 }
-a:active, a:visited, a:focus{
-	outline:none;
-}
-
 /* MARGINS & PADDINGS */
 
 .p-xxs {
@@ -279,11 +270,11 @@ a:active, a:visited, a:focus{
 
 
 .webim_chat {
-	width:100%;
-	min-width: 650px;
-	height:100%;
-	position:relative;
+	width:calc(100% - 20px);
+	min-width: 700px;
 	float:left;
+	margin:10px;
+	box-shadow:0 0 15px #ccc;
 }
 /*头部指南*/
 .im_header {
@@ -293,9 +284,6 @@ a:active, a:visited, a:focus{
 	border-bottom: 1px #ececec solid;
 	border-top-left-radius:3px;
 	border-top-right-radius:3px;
-	position:absolute;
-	top:0;
-	white-space:nowrap;/*强迫不换行*/
 }
 .im_header_seach {
 	width: 213px;
@@ -330,16 +318,14 @@ a.ms-delete{
 a:hover.ms-delete{
 	color:#f74c31;
 }
-
 /*左边列表*/
 .webim_leftbar {
 	width: 251px;
-	position:absolute;
-	top:58px;
-	bottom:0;
+	height: 550px;
 	background: #f1f1f1;
 	float:left;
 	border-bottom-left-radius:3px;
+	position:relative;
 	border-right:1px #ececec solid;
 }
 	/*消息列表*/
@@ -491,7 +477,7 @@ a:hover.ms-delete{
 	padding: 1px 4px;
 	color: #333;
 }
-ul.expmenu, .menu ol li, .message-box {
+ul.expmenu, .menu ol li {
 	width: 100%;
 }
 ul.expmenu li ul li {
@@ -535,12 +521,10 @@ ul.expmenu li ul li:active {
 
 /*右边内容块*/
 .webim_rightbar  {
-    width: calc(100% - 251px);
-	position: absolute;
+	position: relative;
     float: left;
-	left:251px;
-	top:58px;
-	bottom:0;
+    width: calc(100% - 251px);
+	height: 550px;
 	background: url(../img/webim_chatwindow_logo.png) no-repeat center #f9f9f9;
 	border-bottom-right-radius:3px;
 }
@@ -559,14 +543,7 @@ ul.expmenu li ul li:active {
 	margin-right:0;
 }
 .webim_user_card{
-	width:100%;
 	line-height:33px;
-	overflow:auto;
-	position:absolute;
-	top:0;
-	bottom:30px;
-	word-wrap: break-word;/*自动换行*/  
-	word-break: normal;/*自动换行*/ 
 }
 .webim_toux{
 	width:80px;
@@ -610,12 +587,7 @@ ul.expmenu li ul li:active {
 	color:#d5d5d5;
 }
 .btn-toggle a i{
-	margin-top:4px;
-}
-.message-box{
-	position:absolute;
-	bottom:20px;
-}
+	margin-top:4px;}
 .btn_message{
 	width:138px;
 	height:36px;
@@ -629,24 +601,14 @@ ul.expmenu li ul li:active {
 	background:#1fa4ce;
 }
 	/*群组成员*/
-.group_user{
-	width:100%;
-	position:absolute;
-	top:0;
-	bottom:0;
-}
 .user_info_header{
-	width:100%;
 	padding:0 20px;
-	position:absolute;
-	top:0;
 	border-bottom:1px #ececec solid;
 	padding-bottom:8px;
 }
 .user_info_header h3{
 	font-size:20px;
 	font-weight:normal;
-	white-space:nowrap;/*强迫不换行*/
 }
 .user_info_header h3 small{
 	float:right;
@@ -665,11 +627,10 @@ ul.expmenu li ul li:active {
 
 .user_info_content{
 	padding:0 35px;
+	height:370px;
 	overflow-y:auto;
+	margin-top:22px;
 	text-align:justify;
-	position:absolute;
-	bottom:80px;
-	top:80px;
 	/*text-align-last:justify;*/
 }
 .user_info_content dl{
@@ -738,26 +699,6 @@ ul.expmenu li ul li:active {
     background: #EAEAEA;
 	text-align:left;
 }
-.bubble_arrow{
-    float: left;
-    width: 6px;
-    height: 30px;
-    background-image: url(../img/talk_recordtextbg.png);
-    background-repeat: no-repeat;
-    background-position: left 10px;	
-}
-.bubble_arrow.rotate{
-	float:right;
-	margin-right:4px;
-	-webkit-transform:rotate(-113deg);  
-	-moz-transform:rotate(-113deg);  
-	-o-transform:rotate(-113deg);  
-	transform:rotate(-113deg);/*改变元素角度*/
-}
-.font_size12{
-	font-size:12px;
-}
-
 /*发送文件状态*/
 .send-file{
 	min-width:200px;
@@ -786,7 +727,7 @@ ul.expmenu li ul li:active {
 .send-file .text-success, .send-tips .text-success{
 	color:#5fb41b;
 }
-.send-file .text-danger, .text-danger{
+.send-file .text-danger{
 	color:#f74c31;
 }
 .send-load{
@@ -809,6 +750,26 @@ ul.expmenu li ul li:active {
 .send-tips i{
     font-size: 15px;
     vertical-align: text-bottom;
+}
+
+.bubble_arrow{
+    float: left;
+    width: 6px;
+    height: 30px;
+    background-image: url(../img/talk_recordtextbg.png);
+    background-repeat: no-repeat;
+    background-position: left 10px;	
+}
+.bubble_arrow.rotate{
+	float:right;
+	margin-right:4px;
+	-webkit-transform:rotate(-113deg);  
+	-moz-transform:rotate(-113deg);  
+	-o-transform:rotate(-113deg);  
+	transform:rotate(-113deg);/*改变元素角度*/
+}
+.font_size12{
+	font-size:12px;
 }
 
 .webim-send-wrapper{
@@ -870,7 +831,7 @@ ul.expmenu li ul li:active {
 
 	/*聊天表情包*/
 .face-wrapper{
-	width:400px;
+	width:460px;
 	background:#fff;
 	box-shadow:0 0 10px #868686;
 	position:absolute;
@@ -942,25 +903,3 @@ ul.expmenu li ul li:active {
 	font-size:12px; 
 	color:#a8a8a8;
 }
-
-/*模态框*/
-.modal-hd-bg{
-	background:#199acb;
-	color:#fff;
-	border-top-right-radius: 6px;
-	border-top-left-radius: 6px;
-}
-.fa-35px{
-	font-size: 35px;
-    vertical-align: middle;
-    margin-right: 15px;
-}
-.btn-blue{
-	background:#199acb;
-	color:#fff;
-}
-.btn-blue:hover, .btn-blue:active, .btn-blue:visited, .btn-blue:focus{
-	background:#168ab6;
-	color:#fff;
-}
-
