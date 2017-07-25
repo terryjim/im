@@ -13,6 +13,7 @@ import { receiveMessage } from './actions/message'
 import { fetchCorps } from './actions/corp'
 import { fetchGroups } from './actions/group'
 import { fetchFriends } from './actions/friend'
+import { Modal, Button } from 'react-bootstrap';
 let WebIM = window.WebIM
 let conn = new SDK.connection({
     https: WebIM.config.https,
@@ -38,7 +39,10 @@ conn.listen({
         //获取组织架构
 
     },
-    onClosed: function (message) { },         //连接关闭回调
+    onClosed: function (message) {
+        ReactDOM.render(<modalInstance/>, 
+    document.getElementById('connectModal'));
+     },         //连接关闭回调
     onTextMessage: function (message) {
         console.log(message)
         store.dispatch(receiveMessage(message))
@@ -141,4 +145,24 @@ Date.prototype.Format = function (fmt) { //author: meizz
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 };
+
+const modalInstance = (
+  <div className="static-modal">
+    <Modal.Dialog>
+      <Modal.Header>
+        <Modal.Title>连接断开</Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+        IM连接已断开，可能有其它终端以此账号登录，是否重连？
+      </Modal.Body>
+
+      <Modal.Footer>
+        <Button onClick={()=> ReactDOM.render(<div></div>,document.getElementById('connectModal'))}>取消</Button>
+        <Button bsStyle="primary" onClick={()=>window.location.reload()}>重连</Button>
+      </Modal.Footer>
+
+    </Modal.Dialog>
+  </div>
+);
 
